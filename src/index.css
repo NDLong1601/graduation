@@ -2,8 +2,8 @@
 
 @layer base {
   :root {
-    --font-sans: 'Plus Jakarta Sans', system-ui, sans-serif;
-    --font-tech: 'Orbitron', monospace;
+    --font-sans: 'Be Vietnam Pro', 'Plus Jakarta Sans', system-ui, sans-serif;
+    --font-tech: 'Chakra Petch', 'Be Vietnam Pro', system-ui, sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
   }
 
@@ -11,6 +11,9 @@
     font-family: var(--font-sans);
     background-color: #030712;
     color: #f1f5f9;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
 }
 
@@ -43,7 +46,7 @@
 }
 
 .font-tech {
-  font-family: 'Orbitron', monospace;
+  font-family: 'Chakra Petch', 'Be Vietnam Pro', system-ui, sans-serif;
 }
 
 .font-mono-code {
