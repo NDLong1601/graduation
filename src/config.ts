@@ -5,23 +5,23 @@ import type { EventConfig, WishMessage } from './types/graduation';
 // =====================================================================
 export const GRADUATION_CONFIG: EventConfig = {
   graduate: {
-    fullName: "NGUYỄN VĂN AN",
+    fullName: "NGUYỄN ĐỨC LONG",
     degree: "KỸ SƯ CÔNG NGHỆ THÔNG TIN",
-    major: "Khoa Học Máy Tính & Trí Tuệ Nhân Tạo",
-    university: "Đại Học Bách Khoa",
-    faculty: "Khoa Khoa Học & Kỹ Thuật Máy Tính",
-    classCode: "CS-K20",
-    studentId: "2012026",
+    major: "KỸ THUẬT PHẦN MỀM",
+    university: "Đại Học Kinh doanh và Công nghệ Hà Nội",
+    faculty: "",
+    classCode: "",
+    studentId: "",
     // Nếu bạn có ảnh cá nhân, hãy đặt file vào thư mục public/ (ví dụ: /avatar.jpg)
     avatarUrl: "",
   },
 
   event: {
     title: "LỄ TỐT NGHIỆP CỬ NHÂN / KỸ SƯ 2026",
-    date: "Chủ Nhật, Ngày 15 Tháng 11 Năm 2026",
-    time: "07:30 - 12:00",
-    isoDateTime: "2026-11-15T08:00:00", // Thời gian dùng cho đồng hồ đếm ngược (YYYY-MM-DDTHH:mm:ss)
-    locationName: "Hội Trường Lớn A5 - Trường Đại Học Bách Khoa",
+    date: "Thứ Sáu, Ngày 16 Tháng 10 Năm 2026",
+    time: "13:00 - 15:00",
+    isoDateTime: "2026-10-16T13:00:00", // Thời gian dùng cho đồng hồ đếm ngược (YYYY-MM-DDTHH:mm:ss)
+    locationName: "Hội Trường Lớn B - Đại Học Kinh doanh và Công nghệ Hà Nội",
     hall: "Khu vực sảnh A5 & Khán phòng Tầng 2",
     address: "268 Lý Thường Kiệt, Phường 14, Quận 10, TP. Hồ Chí Minh",
     googleMapsUrl: "https://maps.google.com/?q=268+Ly+Thuong+Kiet+Quan+10+TPHCM",
