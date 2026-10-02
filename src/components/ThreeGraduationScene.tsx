@@ -38,8 +38,9 @@ export const ThreeGraduationScene: React.FC<ThreeGraduationSceneProps> = ({ onTo
     const width = container.clientWidth;
     const height = container.clientHeight;
 
+    const isMobile = width < 500;
     const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
-    camera.position.set(0, 0.5, 6.2);
+    camera.position.set(0, 0.5, isMobile ? 7.2 : 6.2);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(width, height);
@@ -373,6 +374,7 @@ export const ThreeGraduationScene: React.FC<ThreeGraduationSceneProps> = ({ onTo
       const newW = container.clientWidth;
       const newH = container.clientHeight;
       camera.aspect = newW / newH;
+      camera.position.z = newW < 500 ? 7.2 : 6.2;
       camera.updateProjectionMatrix();
       renderer.setSize(newW, newH);
     };
@@ -441,51 +443,51 @@ export const ThreeGraduationScene: React.FC<ThreeGraduationSceneProps> = ({ onTo
   };
 
   return (
-    <div className="relative w-full h-[420px] md:h-[520px] select-none flex items-center justify-center">
+    <div className="relative w-full h-[340px] sm:h-[440px] md:h-[520px] select-none flex items-center justify-center">
       {/* 3D WebGL Canvas Container */}
       <div
         ref={containerRef}
-        className="w-full h-full cursor-grab active:cursor-grabbing outline-none"
-        title="Kéo chuột để xoay mô hình 3D"
+        className="w-full h-full cursor-grab active:cursor-grabbing outline-none touch-none"
+        title="Kéo chuột hoặc vuốt để xoay mô hình 3D"
       />
 
       {/* Cyber UI Badge Overlay */}
-      <div className="absolute top-4 left-4 pointer-events-none">
-        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900/80 border border-cyan-500/30 backdrop-blur-md text-xs font-mono-code text-cyan-400 shadow-lg shadow-cyan-500/10">
-          <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
-          <span>3D_HOLO_VIEWER // 360° INTERACTIVE</span>
+      <div className="absolute top-3 left-3 sm:top-4 sm:left-4 pointer-events-none">
+        <div className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-slate-900/80 border border-cyan-500/30 backdrop-blur-md text-[10px] sm:text-xs font-mono-code text-cyan-400 shadow-lg shadow-cyan-500/10">
+          <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-cyan-400 animate-ping" />
+          <span>3D_HOLO_VIEWER // 360°</span>
         </div>
       </div>
 
       {/* Drag & Toss Hint Controls */}
-      <div className="absolute bottom-4 inset-x-4 flex flex-wrap items-center justify-between gap-3 pointer-events-auto">
-        <div className="text-[11px] font-mono-code text-slate-400 bg-slate-900/80 backdrop-blur-md px-3 py-1.5 rounded-lg border border-slate-700/50 hidden sm:flex items-center gap-2">
-          <span className="text-cyan-400 font-bold">🖱️ Tip:</span>
-          <span>Kéo chuột/chạm để xoay 360°</span>
+      <div className="absolute bottom-3 sm:bottom-4 inset-x-3 sm:inset-x-4 flex items-center justify-between gap-2 pointer-events-auto">
+        <div className="text-[10px] sm:text-[11px] font-mono-code text-slate-400 bg-slate-900/80 backdrop-blur-md px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-lg border border-slate-700/50 hidden sm:flex items-center gap-1.5">
+          <span className="text-cyan-400 font-bold">🖱️</span>
+          <span>Kéo/vuốt xoay 360°</span>
         </div>
 
         <div className="flex items-center gap-2 ml-auto">
           {isInteracting && (
             <button
               onClick={resetRotation}
-              className="p-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-slate-700 text-slate-300 hover:text-white transition-all text-xs"
+              className="p-2 sm:p-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-slate-700 text-slate-300 hover:text-white transition-all text-xs"
               title="Đặt lại góc xoay"
             >
-              <RotateCcw className="w-4 h-4" />
+              <RotateCcw className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             </button>
           )}
 
           <button
             onClick={triggerCapToss}
             disabled={isTossing}
-            className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm tracking-wider uppercase transition-all shadow-lg ${
+            className={`flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-xl font-bold text-xs sm:text-sm tracking-wider uppercase transition-all shadow-lg ${
               isTossing
                 ? 'bg-purple-600/50 text-purple-200 cursor-not-allowed'
                 : 'bg-gradient-to-r from-cyan-500 via-purple-600 to-pink-500 hover:from-cyan-400 hover:to-pink-400 text-white shadow-cyan-500/25 hover:scale-105 active:scale-95'
             }`}
           >
-            <Sparkles className={`w-4 h-4 ${isTossing ? 'animate-spin' : 'animate-bounce'}`} />
-            <span>{isTossing ? 'ĐANG TUNG MŨ...' : '🎓 TUNG MŨ CHÚC MỪNG!'}</span>
+            <Sparkles className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${isTossing ? 'animate-spin' : 'animate-bounce'}`} />
+            <span>{isTossing ? 'ĐANG TUNG...' : '🎓 TUNG MŨ!'}</span>
           </button>
         </div>
       </div>

@@ -25,7 +25,7 @@ export const HeroSection: React.FC = () => {
               <p className="text-xs sm:text-sm font-mono-code text-purple-400 tracking-widest uppercase">
                 THƯ MỜI THAM DỰ LỄ TỐT NGHIỆP
               </p>
-              <h1 className="text-4xl sm:text-5xl xl:text-6xl font-tech font-extrabold tracking-tight text-white leading-none">
+              <h1 className="text-3xl sm:text-5xl xl:text-6xl font-tech font-extrabold tracking-tight text-white leading-tight sm:leading-none">
                 <span className="block text-slate-100">CHÀO MỪNG ĐẾN</span>
                 <span className="neon-gradient-text block mt-1">THE GRADUATION</span>
               </h1>
@@ -37,7 +37,8 @@ export const HeroSection: React.FC = () => {
                   {GRADUATION_CONFIG.graduate.degree} • {GRADUATION_CONFIG.graduate.major}
                 </p>
                 <p className="text-xs sm:text-sm text-slate-400">
-                  {GRADUATION_CONFIG.graduate.university} ({GRADUATION_CONFIG.graduate.faculty})
+                  {GRADUATION_CONFIG.graduate.university}
+                  {GRADUATION_CONFIG.graduate.faculty ? ` (${GRADUATION_CONFIG.graduate.faculty})` : ''}
                 </p>
               </div>
             </div>
@@ -45,7 +46,9 @@ export const HeroSection: React.FC = () => {
             {/* Quick Stats Grid */}
             <div className="grid grid-cols-3 gap-2 sm:gap-3 py-2 max-w-md mx-auto lg:mx-0">
               <div className="cyber-card p-3 rounded-2xl text-center border-slate-800">
-                <div className="text-cyan-400 font-tech font-bold text-base sm:text-lg">K20</div>
+                <div className="text-cyan-400 font-tech font-bold text-base sm:text-lg">
+                  {GRADUATION_CONFIG.graduate.classCode || '2022-2026'}
+                </div>
                 <div className="text-[10px] text-slate-400 font-mono-code">NIÊN KHÓA</div>
               </div>
               <div className="cyber-card p-3 rounded-2xl text-center border-slate-800">

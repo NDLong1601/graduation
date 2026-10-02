@@ -88,7 +88,7 @@ export const AccessHologramModal: React.FC<AccessHologramModalProps> = ({ isOpen
 
         {/* Footer tiny HUD info */}
         <div className="mt-6 pt-3 border-t border-slate-800/80 flex items-center justify-between text-[10px] font-mono-code text-slate-500">
-          <span>CODE: {GRADUATION_CONFIG.graduate.studentId}</span>
+          <span>CODE: {GRADUATION_CONFIG.graduate.studentId || 'GRADUATE_2026'}</span>
           <span>STATUS: ACCESS_GRANTED</span>
         </div>
       </div>
