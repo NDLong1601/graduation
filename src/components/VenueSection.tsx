@@ -1,6 +1,7 @@
 import React from 'react';
 import { GRADUATION_CONFIG } from '../config';
 import { sound } from '../utils/audioFx';
+import { LuxuryTiltCard } from './LuxuryTiltCard';
 import { MapPin, Navigation, Car, Compass, Info } from 'lucide-react';
 
 export const VenueSection: React.FC = () => {
@@ -24,7 +25,7 @@ export const VenueSection: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
           {/* Left Info Panel */}
           <div className="lg:col-span-5 space-y-4 flex flex-col justify-between">
-            <div className="luxury-card p-6 sm:p-7 rounded-3xl space-y-5">
+            <LuxuryTiltCard className="luxury-card p-6 sm:p-7 rounded-3xl space-y-5 shadow-md">
               <div>
                 <div className="text-xs font-sans text-amber-700 uppercase tracking-widest font-semibold mb-1">
                   ĐỊA ĐIỂM CHÍNH
@@ -80,7 +81,7 @@ export const VenueSection: React.FC = () => {
                   <span>MỞ CHỈ ĐƯỜNG TRÊN GOOGLE MAPS</span>
                 </a>
               </div>
-            </div>
+            </LuxuryTiltCard>
 
             {/* Quick Contact Card */}
             {GRADUATION_CONFIG.contact.phone && (

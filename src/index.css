@@ -140,3 +140,65 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #C5A059;
 }
+
+/* 3D Envelope & Wax Seal Keyframes */
+@keyframes waxBreak {
+  0% { transform: scale(1); }
+  25% { transform: scale(1.08) rotate(-3deg); }
+  50% { transform: scale(1.12) rotate(3deg); filter: brightness(1.3); }
+  100% { transform: scale(0.95); opacity: 0; }
+}
+
+.animate-wax-break {
+  animation: waxBreak 0.4s ease-out forwards;
+}
+
+@keyframes flapOpen3D {
+  0% { transform: rotateX(0deg); z-index: 25; }
+  100% { transform: rotateX(-180deg); z-index: 5; }
+}
+
+.animate-flap-open {
+  transform-origin: top center;
+  animation: flapOpen3D 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes letterSlideUp {
+  0% { transform: translateY(60px) scale(0.9); opacity: 0; }
+  100% { transform: translateY(0px) scale(1); opacity: 1; }
+}
+
+.animate-letter-rise {
+  animation: letterSlideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Calligraphy Stroke Animation */
+@keyframes strokeDraw {
+  0% { stroke-dashoffset: 1000; }
+  100% { stroke-dashoffset: 0; }
+}
+
+.calligraphy-stroke {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: strokeDraw 2.4s ease-in-out forwards;
+}
+
+/* Flying Origami Paper Airplane */
+@keyframes flyAcrossScreen {
+  0% {
+    transform: translate(-35vw, 25vh) scale(0.6) rotate(-20deg);
+    opacity: 0;
+  }
+  25% {
+    opacity: 1;
+    transform: translate(-10vw, -5vh) scale(1.1) rotate(5deg);
+  }
+  65% {
+    transform: translate(15vw, -12vh) scale(1.25) rotate(15deg);
+  }
+  100% {
+    transform: translate(30vw, 8vh) scale(0.7) rotate(35deg);
+    opacity: 0;
+  }
+}

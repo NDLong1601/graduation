@@ -1,6 +1,7 @@
 import React from 'react';
 import { GRADUATION_CONFIG } from '../config';
 import { ThreeGraduationScene } from './ThreeGraduationScene';
+import { LuxuryTiltCard } from './LuxuryTiltCard';
 import { sound } from '../utils/audioFx';
 import { Award, Calendar, MapPin, Send, CheckCircle2 } from 'lucide-react';
 
@@ -46,37 +47,37 @@ export const HeroSection: React.FC = () => {
 
             {/* Quick Stats Grid */}
             <div className="grid grid-cols-3 gap-2.5 sm:gap-3 py-2 max-w-md mx-auto lg:mx-0">
-              <div className="bg-white/95 p-3.5 rounded-2xl text-center border border-[#C5A059]/25 shadow-sm">
+              <LuxuryTiltCard className="bg-white/95 p-3.5 rounded-2xl text-center border border-[#C5A059]/25 shadow-sm">
                 <div className="text-[#8A6D3B] font-numeral font-bold text-base sm:text-lg">
                   {GRADUATION_CONFIG.graduate.classCode}
                 </div>
                 <div className="text-[10px] text-slate-500 font-medium tracking-wide">LỚP SINH VIÊN</div>
-              </div>
-              <div className="bg-white/95 p-3.5 rounded-2xl text-center border border-[#C5A059]/25 shadow-sm">
+              </LuxuryTiltCard>
+              <LuxuryTiltCard className="bg-white/95 p-3.5 rounded-2xl text-center border border-[#C5A059]/25 shadow-sm">
                 <div className="text-[#8A6D3B] font-numeral font-bold text-base sm:text-lg">
                   K27
                 </div>
                 <div className="text-[10px] text-slate-500 font-medium tracking-wide">SINH VIÊN KHÓA</div>
-              </div>
-              <div className="bg-white/95 p-3.5 rounded-2xl text-center border border-[#C5A059]/25 shadow-sm">
+              </LuxuryTiltCard>
+              <LuxuryTiltCard className="bg-white/95 p-3.5 rounded-2xl text-center border border-[#C5A059]/25 shadow-sm">
                 <div className="text-emerald-700 font-sans font-bold text-sm sm:text-base flex items-center justify-center gap-1">
                   <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /> TÂN KỸ SƯ
                 </div>
                 <div className="text-[10px] text-slate-500 font-medium tracking-wide">DANH HIỆU</div>
-              </div>
+              </LuxuryTiltCard>
             </div>
 
             {/* Event Highlights Quick Bar */}
-            <div className="space-y-2.5 text-xs sm:text-sm text-slate-700 bg-white/95 p-4 rounded-2xl border border-[#C5A059]/25 shadow-sm">
+            <LuxuryTiltCard className="space-y-2.5 text-xs sm:text-sm text-slate-700 bg-white/95 p-4 rounded-2xl border border-[#C5A059]/25 shadow-sm">
               <div className="flex items-center gap-2.5">
                 <Calendar className="w-4 h-4 text-[#C5A059] shrink-0" />
-                <span><strong className="text-slate-900">Thời gian:</strong> {GRADUATION_CONFIG.event.time} — {GRADUATION_CONFIG.event.date}</span>
+                <span><strong className="text-slate-900">Thời gian:</strong> <span className="font-numeral font-semibold">{GRADUATION_CONFIG.event.time}</span> — {GRADUATION_CONFIG.event.date}</span>
               </div>
               <div className="flex items-center gap-2.5">
                 <MapPin className="w-4 h-4 text-[#C5A059] shrink-0" />
                 <span><strong className="text-slate-900">Địa điểm:</strong> {GRADUATION_CONFIG.event.locationName}</span>
               </div>
-            </div>
+            </LuxuryTiltCard>
 
             {/* Buttons */}
             <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 pt-2">

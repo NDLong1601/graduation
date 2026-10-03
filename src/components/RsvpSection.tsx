@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { sound } from '../utils/audioFx';
 import { GRADUATION_CONFIG } from '../config';
+import { LuxuryTiltCard } from './LuxuryTiltCard';
 import confetti from 'canvas-confetti';
 import { Send, CheckCircle2, UserCheck, Sparkles, MessageSquare } from 'lucide-react';
 
@@ -47,22 +48,54 @@ export const RsvpSection: React.FC = () => {
 
       setIsSubmitting(false);
       setIsSubmitted(true);
-      sound.playSuccess();
+      sound.playRoyalFanfare();
 
-      // Confetti burst with Rose Gold and Champagne Gold
+      // Royal Golden Fireworks Grand Show (Feature 10)
+      // Stage 1: Left & Right Rockets
       confetti({
-        particleCount: 110,
-        spread: 85,
-        origin: { y: 0.6 },
-        colors: ['#fb7185', '#fcd34d', '#f43f5e', '#fda4af'],
+        particleCount: 80,
+        angle: 60,
+        spread: 65,
+        origin: { x: 0, y: 0.75 },
+        colors: ['#D4AF37', '#F3E5AB', '#FFFFFF', '#0F172A'],
       });
+      confetti({
+        particleCount: 80,
+        angle: 120,
+        spread: 65,
+        origin: { x: 1, y: 0.75 },
+        colors: ['#D4AF37', '#C5A059', '#FFFFFF', '#0F172A'],
+      });
+
+      // Stage 2: Spherical Starburst from Center
+      setTimeout(() => {
+        confetti({
+          particleCount: 130,
+          spread: 100,
+          origin: { x: 0.5, y: 0.5 },
+          colors: ['#D4AF37', '#F59E0B', '#FDE68A', '#FFFFFF', '#1E3A8A'],
+          shapes: ['circle', 'square'],
+        });
+      }, 250);
+
+      // Stage 3: Cascading Shower of Gold Glitter
+      setTimeout(() => {
+        confetti({
+          particleCount: 90,
+          spread: 120,
+          origin: { x: 0.5, y: 0.3 },
+          colors: ['#D4AF37', '#C5A059', '#FFFFFF'],
+          scalar: 1.2,
+          drift: 0.2,
+        });
+      }, 550);
     }, 600);
   };
 
   return (
     <section id="rsvp" className="py-16 relative">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="luxury-card rounded-3xl p-6 sm:p-10 relative">
+        <LuxuryTiltCard className="luxury-card rounded-3xl p-6 sm:p-10 relative shadow-xl">
           {/* Header */}
           <div className="text-center space-y-2 mb-8">
             <div className="inline-flex items-center gap-2 text-xs font-sans font-medium text-amber-800 px-3.5 py-1.5 rounded-full bg-amber-50 border border-amber-200 shadow-sm">
@@ -98,8 +131,8 @@ export const RsvpSection: React.FC = () => {
                 </p>
               </div>
 
-              {/* Digital Pass Ticket */}
-              <div className="p-5 rounded-2xl bg-white border border-amber-200/90 text-left font-sans text-xs space-y-2 max-w-sm mx-auto shadow-sm">
+              {/* Digital Pass Ticket with 3D Tilt */}
+              <LuxuryTiltCard className="p-5 rounded-2xl bg-white border border-amber-200/90 text-left font-sans text-xs space-y-2 max-w-sm mx-auto shadow-md">
                 <div className="flex justify-between items-center pb-2 border-b border-slate-100">
                   <span className="text-slate-400 uppercase tracking-wider text-[10px]">THẺ THAM DỰ</span>
                   <span className="text-amber-700 font-bold font-numeral text-sm">#TK-{Math.floor(1000 + Math.random() * 9000)}</span>
@@ -116,14 +149,14 @@ export const RsvpSection: React.FC = () => {
                   <span>Tiệc thân mật:</span>
                   <span className="text-amber-800 font-semibold">{formData.afterParty ? 'Có tham gia' : 'Không tham gia'}</span>
                 </div>
-              </div>
+              </LuxuryTiltCard>
 
               <button
                 onClick={() => {
                   sound.playClick();
                   setIsSubmitted(false);
                 }}
-                className="text-xs text-slate-500 hover:text-amber-800 underline font-sans transition-colors pt-2 inline-block"
+                className="text-xs text-slate-500 hover:text-amber-800 underline font-sans transition-colors pt-2 inline-block cursor-pointer"
               >
                 Gửi lại phản hồi khác
               </button>
@@ -273,7 +306,7 @@ export const RsvpSection: React.FC = () => {
               </button>
             </form>
           )}
-        </div>
+        </LuxuryTiltCard>
       </div>
     </section>
   );

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { GRADUATION_CONFIG } from '../config';
 import { sound } from '../utils/audioFx';
+import { LuxuryTiltCard } from './LuxuryTiltCard';
 import { CalendarPlus, Download, Clock } from 'lucide-react';
 
 interface TimeLeft {
@@ -96,7 +97,7 @@ export const CountdownSection: React.FC = () => {
   return (
     <section id="countdown" className="py-12 relative">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-white/90 rounded-3xl p-6 sm:p-10 border border-[#C5A059]/30 text-center relative overflow-hidden shadow-xl shadow-slate-900/5">
+        <LuxuryTiltCard className="bg-white/90 rounded-3xl p-6 sm:p-10 border border-[#C5A059]/30 text-center relative overflow-hidden shadow-xl shadow-slate-900/5">
           {/* Title */}
           <div className="relative z-10 space-y-2 mb-8">
             <div className="inline-flex items-center gap-2 text-xs font-semibold text-[#8A6D3B] px-3.5 py-1 rounded-full bg-[#F7F4EC] border border-[#C5A059]/35">
@@ -149,7 +150,7 @@ export const CountdownSection: React.FC = () => {
               <span>Tải file Lịch (.ics) cho iPhone/PC</span>
             </button>
           </div>
-        </div>
+        </LuxuryTiltCard>
       </div>
     </section>
   );

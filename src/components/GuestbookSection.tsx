@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import type { WishMessage } from '../types/graduation';
 import { INITIAL_WISHES } from '../config';
 import { sound } from '../utils/audioFx';
+import { LuxuryTiltCard } from './LuxuryTiltCard';
 import confetti from 'canvas-confetti';
 import { MessageSquareHeart, Send, Heart, Sparkles } from 'lucide-react';
 
@@ -11,6 +12,7 @@ export const GuestbookSection: React.FC = () => {
   const [relation, setRelation] = useState('Bạn bè');
   const [message, setMessage] = useState('');
   const [selectedEmoji, setSelectedEmoji] = useState('🎓');
+  const [flyingPlane, setFlyingPlane] = useState<{ active: boolean; sender: string } | null>(null);
 
   const emojis = ['🎓', '🎉', '🚀', '❤️', '⭐', '✨', '💐', '🥂'];
 
@@ -33,7 +35,9 @@ export const GuestbookSection: React.FC = () => {
     e.preventDefault();
     if (!name.trim() || !message.trim()) return;
 
-    sound.playClick();
+    // Trigger Paper Plane sound & visual flight
+    sound.playPaperPlaneWhoosh();
+    setFlyingPlane({ active: true, sender: name.trim() });
 
     const newWish: WishMessage = {
       id: `wish-${Date.now()}`,
@@ -44,28 +48,68 @@ export const GuestbookSection: React.FC = () => {
       avatarEmoji: selectedEmoji,
     };
 
-    const updated = [newWish, ...wishes];
-    setWishes(updated);
-    try {
-      localStorage.setItem('graduation_guestbook_wishes', JSON.stringify(updated));
-    } catch (e) {
-      console.error(e);
-    }
+    setTimeout(() => {
+      const updated = [newWish, ...wishes];
+      setWishes(updated);
+      try {
+        localStorage.setItem('graduation_guestbook_wishes', JSON.stringify(updated));
+      } catch (e) {
+        console.error(e);
+      }
 
-    setName('');
-    setMessage('');
-    sound.playSuccess();
+      setName('');
+      setMessage('');
+      setFlyingPlane(null);
+      sound.playSuccess();
 
-    confetti({
-      particleCount: 60,
-      spread: 65,
-      origin: { y: 0.8 },
-      colors: ['#D4AF37', '#C5A059', '#1E293B', '#F59E0B'],
-    });
+      confetti({
+        particleCount: 70,
+        spread: 75,
+        origin: { y: 0.7 },
+        colors: ['#D4AF37', '#C5A059', '#1E293B', '#F59E0B'],
+      });
+    }, 1100);
   };
 
   return (
-    <section id="guestbook" className="py-16 relative">
+    <section id="guestbook" className="py-16 relative overflow-hidden">
+      {/* Animated Flying Paper Airplane (Feature 9) */}
+      {flyingPlane && (
+        <div className="fixed inset-0 pointer-events-none z-50 flex items-center justify-center">
+          <div
+            className="absolute transition-all duration-1000 ease-out flex flex-col items-center"
+            style={{
+              animation: 'flyAcrossScreen 1.1s cubic-bezier(0.25, 1, 0.5, 1) forwards',
+            }}
+          >
+            {/* Origami Paper Airplane SVG */}
+            <div className="relative">
+              <svg
+                width="64"
+                height="64"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#D4AF37"
+                strokeWidth="1.8"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="filter drop-shadow-xl transform rotate-12"
+              >
+                <polygon points="3 3 21 12 3 21 7 12 3 3" fill="#FFFBEB" />
+                <line x1="7" y1="12" x2="21" y2="12" stroke="#B45309" />
+              </svg>
+
+              {/* Glowing Stardust Trail behind plane */}
+              <div className="absolute top-1/2 right-full w-32 h-1 bg-gradient-to-l from-[#D4AF37] to-transparent blur-[1px] animate-pulse" />
+            </div>
+
+            <div className="bg-slate-900/90 text-amber-200 text-xs px-3 py-1 rounded-full border border-amber-400/50 shadow-lg mt-2 backdrop-blur-md">
+              Lời chúc của {flyingPlane.sender} đang bay tới... ✨
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center space-y-3 mb-12">
@@ -77,14 +121,14 @@ export const GuestbookSection: React.FC = () => {
             Sổ Lưu Bút Kỷ Niệm
           </h2>
           <p className="text-sm text-slate-600 max-w-lg mx-auto">
-            Gửi lại vài dòng nhắn nhủ thân thương để lưu lại khoảnh khắc đáng nhớ cùng tân khoa nhé!
+            Gửi lại vài dòng nhắn nhủ thân thương để lưu lại khoảnh khắc thanh xuân đáng nhớ cùng tân khoa nhé!
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          {/* Post Wish Box */}
+          {/* Post Wish Box with 3D Tilt Card */}
           <div className="lg:col-span-5">
-            <div className="luxury-card p-6 sm:p-7 rounded-3xl sticky top-24">
+            <LuxuryTiltCard className="luxury-card p-6 sm:p-7 rounded-3xl sticky top-24 shadow-md">
               <h3 className="font-serif-luxury text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
                 <Sparkles className="w-5 h-5 text-amber-600" />
                 <span>Gửi Lời Chúc Mừng</span>
@@ -160,13 +204,14 @@ export const GuestbookSection: React.FC = () => {
 
                 <button
                   type="submit"
-                  className="w-full py-3 rounded-xl bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 hover:from-slate-800 hover:to-slate-700 text-amber-300 font-sans font-semibold text-xs uppercase tracking-wide transition-all flex items-center justify-center gap-2 shadow-md hover:shadow-lg hover:scale-[1.01] active:scale-[0.99] border border-amber-500/30"
+                  disabled={flyingPlane?.active}
+                  className="w-full py-3 rounded-xl bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 hover:from-slate-800 hover:to-slate-700 text-amber-300 font-sans font-semibold text-xs uppercase tracking-wide transition-all flex items-center justify-center gap-2 shadow-md hover:shadow-lg hover:scale-[1.01] active:scale-[0.99] border border-amber-500/30 cursor-pointer"
                 >
                   <Send className="w-4 h-4 text-amber-400" />
-                  <span>ĐĂNG LỜI CHÚC LÊN TƯỜNG</span>
+                  <span>{flyingPlane?.active ? 'ĐANG PHÓNG MÁY BAY LỜI CHÚC...' : 'PHÓNG LỜI CHÚC LÊN TƯỜNG'}</span>
                 </button>
               </form>
-            </div>
+            </LuxuryTiltCard>
           </div>
 
           {/* Wall Display */}
@@ -193,7 +238,7 @@ export const GuestbookSection: React.FC = () => {
                 </div>
               ) : (
                 wishes.map((item) => (
-                  <div
+                  <LuxuryTiltCard
                     key={item.id}
                     className="luxury-card p-5 rounded-2xl hover:border-amber-300 transition-all group"
                   >
@@ -219,7 +264,7 @@ export const GuestbookSection: React.FC = () => {
                     <p className="text-xs sm:text-sm text-slate-700 pl-13 leading-relaxed italic">
                       "{item.message}"
                     </p>
-                  </div>
+                  </LuxuryTiltCard>
                 ))
               )}
             </div>
