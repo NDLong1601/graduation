@@ -47,19 +47,21 @@ export const HeroSection: React.FC = () => {
             <div className="grid grid-cols-3 gap-2.5 sm:gap-3 py-2 max-w-md mx-auto lg:mx-0">
               <div className="bg-white/95 p-3.5 rounded-2xl text-center border border-[#C5A059]/25 shadow-sm">
                 <div className="text-[#8A6D3B] font-serif-luxury font-bold text-base sm:text-lg">
-                  {GRADUATION_CONFIG.graduate.classCode || '2022-2026'}
+                  K27
                 </div>
-                <div className="text-[10px] text-slate-500 font-medium tracking-wide">NIÊN KHÓA</div>
+                <div className="text-[10px] text-slate-500 font-medium tracking-wide">SINH VIÊN KHÓA</div>
               </div>
               <div className="bg-white/95 p-3.5 rounded-2xl text-center border border-[#C5A059]/25 shadow-sm">
-                <div className="text-[#8A6D3B] font-serif-luxury font-bold text-base sm:text-lg">A+</div>
-                <div className="text-[10px] text-slate-500 font-medium tracking-wide">KHÓA LUẬN</div>
+                <div className="text-[#8A6D3B] font-serif-luxury font-bold text-base sm:text-lg">
+                  Khoa CNTT
+                </div>
+                <div className="text-[10px] text-slate-500 font-medium tracking-wide">ĐƠN VỊ ĐÀO TẠO</div>
               </div>
               <div className="bg-white/95 p-3.5 rounded-2xl text-center border border-[#C5A059]/25 shadow-sm">
                 <div className="text-emerald-700 font-serif-luxury font-bold text-base sm:text-lg flex items-center justify-center gap-1">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /> TỐT NGHIỆP
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /> TÂN KỸ SƯ
                 </div>
-                <div className="text-[10px] text-slate-500 font-medium tracking-wide">TRẠNG THÁI</div>
+                <div className="text-[10px] text-slate-500 font-medium tracking-wide">DANH HIỆU</div>
               </div>
             </div>
 

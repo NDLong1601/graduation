@@ -60,16 +60,16 @@ export const AccessHologramModal: React.FC<AccessHologramModalProps> = ({ isOpen
           <div className="grid grid-cols-2 gap-2 text-left bg-[#F7F4EC] p-3 rounded-xl border border-[#C5A059]/20 text-xs">
             <div className="flex items-center gap-2 text-slate-700">
               <Calendar className="w-4 h-4 text-[#C5A059] shrink-0" />
-              <span className="truncate font-medium">{GRADUATION_CONFIG.event.date.split(',')[0]} (16/10)</span>
+              <span className="truncate font-medium">13h00 • 16/10/2026</span>
             </div>
             <div className="flex items-center gap-2 text-slate-700">
               <MapPin className="w-4 h-4 text-[#C5A059] shrink-0" />
-              <span className="truncate font-medium">Hà Nội</span>
+              <span className="truncate font-medium">Hội trường nhà B</span>
             </div>
           </div>
 
-          <p className="text-xs text-slate-500 italic max-w-sm mx-auto leading-relaxed">
-            "Sự hiện diện của người thân và bạn bè là niềm vinh hạnh to lớn cho Long trong ngày tốt nghiệp trọng đại này!"
+          <p className="text-xs text-slate-600 italic max-w-sm mx-auto leading-relaxed">
+            "Thanh xuân có bạn thật đẹp! ♡ Khép lại một hành trình – Mở ra một tương lai!"
           </p>
 
           {/* Open Button */}

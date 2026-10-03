@@ -51,7 +51,7 @@ export const VenueSection: React.FC = () => {
                   <div>
                     <span className="font-semibold text-slate-900">Bãi gửi xe:</span>
                     <p className="text-slate-600 mt-0.5">
-                      Gửi xe tại Bãi giữ xe Cổng 1 (đối diện sảnh chính) hoặc Bãi xe nhà xe trung tâm.
+                      Gửi xe tại khu vực nhà xe trường ĐH Kinh doanh và Công nghệ Hà Nội hoặc theo hướng dẫn của bảo vệ cổng trường.
                     </p>
                   </div>
                 </div>
@@ -61,7 +61,7 @@ export const VenueSection: React.FC = () => {
                   <div>
                     <span className="font-semibold text-slate-900">Lưu ý ngày lễ:</span>
                     <p className="text-slate-600 mt-0.5">
-                      Ngày tốt nghiệp trường thường khá đông xe, quý khách nên đến trước 30 phút để chọn được góc chụp hình đẹp nhất!
+                      Buổi lễ bắt đầu từ 13h00, quý khách và bạn bè nên đến sớm khoảng 30 phút để tiện đón tiếp và lưu lại những khung hình đẹp nhất!
                     </p>
                   </div>
                 </div>
@@ -83,19 +83,21 @@ export const VenueSection: React.FC = () => {
             </div>
 
             {/* Quick Contact Card */}
-            <div className="luxury-card p-4 rounded-2xl flex items-center justify-between text-xs">
-              <div>
-                <span className="text-slate-500">Cần hỗ trợ chỉ đường?</span>
-                <p className="font-bold text-slate-800">Hotline / Zalo: {GRADUATION_CONFIG.contact.phone}</p>
+            {GRADUATION_CONFIG.contact.phone && (
+              <div className="luxury-card p-4 rounded-2xl flex items-center justify-between text-xs">
+                <div>
+                  <span className="text-slate-500">Cần hỗ trợ chỉ đường?</span>
+                  <p className="font-bold text-slate-800">Hotline / Zalo: {GRADUATION_CONFIG.contact.phone}</p>
+                </div>
+                <a
+                  href={`tel:${GRADUATION_CONFIG.contact.phone.replace(/\s+/g, '')}`}
+                  onClick={() => sound.playClick()}
+                  className="px-3.5 py-1.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 font-semibold hover:bg-amber-100 transition-colors"
+                >
+                  Gọi ngay
+                </a>
               </div>
-              <a
-                href={`tel:${GRADUATION_CONFIG.contact.phone.replace(/\s+/g, '')}`}
-                onClick={() => sound.playClick()}
-                className="px-3.5 py-1.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 font-semibold hover:bg-amber-100 transition-colors"
-              >
-                Gọi ngay
-              </a>
-            </div>
+            )}
           </div>
 
           {/* Right Map Embed */}
