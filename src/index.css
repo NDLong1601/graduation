@@ -2,110 +2,124 @@
 
 @layer base {
   :root {
-    --font-sans: 'Be Vietnam Pro', 'Plus Jakarta Sans', system-ui, sans-serif;
-    --font-tech: 'Chakra Petch', 'Be Vietnam Pro', system-ui, sans-serif;
-    --font-mono: 'JetBrains Mono', monospace;
+    --font-sans: 'Be Vietnam Pro', system-ui, -apple-system, sans-serif;
+    --font-serif: 'Playfair Display', Georgia, serif;
+    --gold: #C5A059;
+    --gold-dark: #8A6D3B;
   }
 
   body {
     font-family: var(--font-sans);
-    background-color: #120409;
-    color: #fce7f3;
+    background-color: #FAF8F5;
+    color: #1E293B;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
   }
 }
 
-/* Custom Rose Gold & Burgundy Animations & Utilities */
-@keyframes pulseGlow {
-  0%, 100% {
-    box-shadow: 0 0 18px rgba(244, 63, 94, 0.35), 0 0 35px rgba(245, 158, 11, 0.2);
-  }
-  50% {
-    box-shadow: 0 0 28px rgba(244, 63, 94, 0.65), 0 0 55px rgba(245, 158, 11, 0.35);
-  }
+.font-serif-luxury {
+  font-family: 'Playfair Display', Georgia, serif;
 }
 
-@keyframes floatSlow {
-  0%, 100% {
-    transform: translateY(0px) rotate(0deg);
-  }
-  50% {
-    transform: translateY(-8px) rotate(0.8deg);
-  }
+.font-sans-clean {
+  font-family: 'Be Vietnam Pro', system-ui, sans-serif;
+}
+
+/* Luxury Gold & Navy Text Gradients */
+.gold-foil-text {
+  background: linear-gradient(135deg, #9A7B38 0%, #D4AF37 45%, #8B6B2E 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.navy-gradient-text {
+  background: linear-gradient(135deg, #0F172A 0%, #1E3A8A 65%, #0F172A 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Backward compatibility aliases */
+.neon-gradient-text,
+.rose-gold-gradient {
+  background: linear-gradient(135deg, #0F172A 0%, #8A6D3B 55%, #C5A059 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .font-tech {
-  font-family: 'Chakra Petch', 'Be Vietnam Pro', system-ui, sans-serif;
+  font-family: 'Playfair Display', Georgia, serif;
 }
 
 .font-mono-code {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Be Vietnam Pro', system-ui, sans-serif;
+  letter-spacing: 0.05em;
 }
 
-.animate-pulse-glow {
-  animation: pulseGlow 4s infinite ease-in-out;
-}
-
-.animate-float {
-  animation: floatSlow 5s ease-in-out infinite;
-}
-
-/* Warm Velvet Grid Background */
-.cyber-grid {
-  background-size: 50px 50px;
-  background-image: 
-    linear-gradient(to right, rgba(244, 63, 94, 0.04) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(244, 63, 94, 0.04) 1px, transparent 1px);
-}
-
-/* Glassmorphism Luxury Velvet Card */
-.cyber-card {
-  background: rgba(28, 7, 17, 0.72);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  border: 1px solid rgba(244, 63, 94, 0.18);
+/* Luxury Card - Light Ivory Glass with Gold Accents */
+.cyber-card,
+.luxury-card {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(197, 160, 89, 0.22);
+  box-shadow: 0 15px 40px -10px rgba(15, 23, 42, 0.06), 0 0 1px 1px rgba(197, 160, 89, 0.1);
   position: relative;
   overflow: hidden;
 }
 
-.cyber-card::before {
+.cyber-card::before,
+.luxury-card::before {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(251, 113, 133, 0.7), rgba(245, 158, 11, 0.7), transparent);
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(197, 160, 89, 0.65), rgba(212, 175, 55, 0.9), transparent);
 }
 
-/* Rose Gold & Champagne Gold Text Gradients */
-.neon-gradient-text,
-.rose-gold-gradient {
-  background: linear-gradient(135deg, #ffe4e6 0%, #fb7185 45%, #fbbf24 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+/* Elegant Floating Animation */
+@keyframes floatGentle {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
 }
 
-.cyan-gradient-text,
-.gold-gradient-text {
-  background: linear-gradient(135deg, #fef08a 0%, #f59e0b 60%, #e11d48 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+.animate-float {
+  animation: floatGentle 5s ease-in-out infinite;
 }
 
-/* Custom scrollbar */
+/* Subtle Shimmer for Gold Ribbons */
+@keyframes goldShimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.gold-shimmer-btn {
+  background: linear-gradient(110deg, #1E293B 0%, #334155 35%, #8A6D3B 50%, #334155 65%, #1E293B 100%);
+  background-size: 200% 100%;
+  animation: goldShimmer 7s infinite linear;
+}
+
+/* Custom Refined Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 7px;
 }
 ::-webkit-scrollbar-track {
-  background: #120409;
+  background: #FAF8F5;
 }
 ::-webkit-scrollbar-thumb {
-  background: #4c0519;
+  background: #E2D9CC;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #e11d48;
+  background: #C5A059;
 }

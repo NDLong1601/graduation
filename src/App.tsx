@@ -14,16 +14,16 @@ export const App: React.FC = () => {
   const [showAccessModal, setShowAccessModal] = useState(true);
 
   return (
-    <div className="min-h-screen bg-[#120409] text-slate-100 cyber-grid relative overflow-x-hidden selection:bg-rose-500 selection:text-white">
-      {/* Interactive 3D Cyber Background Canvas */}
+    <div className="min-h-screen bg-[#FAF8F5] text-slate-800 relative overflow-x-hidden selection:bg-amber-100 selection:text-amber-900">
+      {/* Interactive 3D Background Canvas */}
       <ThreeCyberBackground />
 
-      {/* 3D Glowing Velvet & Rose Gold Ambient Orbs */}
-      <div className="fixed top-20 left-10 w-96 h-96 bg-rose-600/15 rounded-full blur-[130px] pointer-events-none" />
-      <div className="fixed bottom-20 right-10 w-[500px] h-[500px] bg-amber-600/10 rounded-full blur-[140px] pointer-events-none" />
-      <div className="fixed top-1/2 left-1/3 w-80 h-80 bg-pink-700/10 rounded-full blur-[100px] pointer-events-none" />
+      {/* Soft Champagne Gold & Warm Alabaster Ambient Lights */}
+      <div className="fixed top-20 left-10 w-96 h-96 bg-amber-200/20 rounded-full blur-[130px] pointer-events-none" />
+      <div className="fixed bottom-20 right-10 w-[500px] h-[500px] bg-amber-100/30 rounded-full blur-[140px] pointer-events-none" />
+      <div className="fixed top-1/2 left-1/3 w-80 h-80 bg-stone-200/30 rounded-full blur-[100px] pointer-events-none" />
 
-      {/* Cyber Initial Access Hologram Modal */}
+      {/* Royal Sealed Invitation Modal */}
       <AccessHologramModal
         isOpen={showAccessModal}
         onEnter={() => setShowAccessModal(false)}

@@ -16,8 +16,7 @@ export const ThreeGraduationScene: React.FC<ThreeGraduationSceneProps> = ({ onTo
   // References for animation
   const sceneRef = useRef<THREE.Scene | null>(null);
   const capGroupRef = useRef<THREE.Group | null>(null);
-  const ringsRef = useRef<THREE.Group | null>(null);
-  const particlesRef = useRef<THREE.Points | null>(null);
+  const starsGroupRef = useRef<THREE.Group | null>(null);
   const tossAnimationRef = useRef<{
     active: boolean;
     progress: number;
@@ -39,104 +38,97 @@ export const ThreeGraduationScene: React.FC<ThreeGraduationSceneProps> = ({ onTo
     const height = container.clientHeight;
 
     const isMobile = width < 500;
-    const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
-    camera.position.set(0, 0.5, isMobile ? 7.2 : 6.2);
+    const camera = new THREE.PerspectiveCamera(42, width / height, 0.1, 100);
+    camera.position.set(0, 0.4, isMobile ? 7.0 : 6.0);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.1;
     container.appendChild(renderer.domElement);
 
-    // 2. Lights
-    const ambientLight = new THREE.AmbientLight(0xfff1f2, 1.1);
+    // 2. Realistic Studio Lighting
+    const ambientLight = new THREE.AmbientLight(0xfffdfa, 1.3);
     scene.add(ambientLight);
 
-    // Warm Rose Gold Key Light
-    const roseLight = new THREE.PointLight(0xfb7185, 16, 22);
-    roseLight.position.set(-3, 3, 3);
-    scene.add(roseLight);
+    // Key Studio Light (Warm White)
+    const keyLight = new THREE.DirectionalLight(0xffffff, 2.5);
+    keyLight.position.set(-3, 5, 4);
+    keyLight.castShadow = true;
+    scene.add(keyLight);
 
-    // Velvet Wine/Crimson Fill Light
-    const wineLight = new THREE.PointLight(0xbe123c, 14, 22);
-    wineLight.position.set(3, -2, 2);
-    scene.add(wineLight);
+    // Fill Light (Soft Champagne Gold)
+    const fillLight = new THREE.DirectionalLight(0xfef3c7, 1.2);
+    fillLight.position.set(4, -2, 3);
+    scene.add(fillLight);
 
-    // Champagne Golden Rim Light
-    const goldRim = new THREE.DirectionalLight(0xfcd34d, 3.0);
-    goldRim.position.set(0, 4, -4);
-    scene.add(goldRim);
+    // Rim Light (Rich Polished Gold)
+    const rimLight = new THREE.DirectionalLight(0xd4af37, 2.2);
+    rimLight.position.set(0, 4, -4);
+    scene.add(rimLight);
 
-    // Interactive Cursor Follower Light (Rose Gold Glow)
-    const cursorLight = new THREE.PointLight(0xf43f5e, 9, 12);
-    cursorLight.position.set(0, 0, 3.5);
+    // Interactive Point Light that tracks cursor
+    const cursorLight = new THREE.PointLight(0xfcd34d, 3.5, 8);
+    cursorLight.position.set(0, 0, 3);
     scene.add(cursorLight);
-
-    // Holographic Cyber Pedestal (Floor disc)
-    const floorGeo = new THREE.RingGeometry(1.6, 2.6, 32);
-    const floorMat = new THREE.MeshBasicMaterial({
-      color: 0xfb7185,
-      wireframe: true,
-      transparent: true,
-      opacity: 0.25,
-      side: THREE.DoubleSide,
-    });
-    const floorMesh = new THREE.Mesh(floorGeo, floorMat);
-    floorMesh.rotation.x = Math.PI / 2;
-    floorMesh.position.y = -1.25;
-    scene.add(floorMesh);
 
     // 3. Main Cap Group
     const capGroup = new THREE.Group();
     capGroupRef.current = capGroup;
     scene.add(capGroup);
 
-    // Cap Materials (Deep Velvet Charcoal/Burgundy)
+    // Luxury Materials
+    // Deep Royal Navy / Obsidian Velvet Fabric
     const capFabricMaterial = new THREE.MeshStandardMaterial({
-      color: 0x1a0710,
-      roughness: 0.4,
-      metalness: 0.3,
+      color: 0x0f172a,
+      roughness: 0.45,
+      metalness: 0.15,
     });
 
+    // 24K Polished Gold
     const goldMaterial = new THREE.MeshStandardMaterial({
-      color: 0xfcd34d,
-      roughness: 0.18,
-      metalness: 0.9,
-      emissive: 0xf59e0b,
+      color: 0xd4af37,
+      roughness: 0.15,
+      metalness: 0.95,
+      emissive: 0x9a7b38,
+      emissiveIntensity: 0.12,
+    });
+
+    // Warm Ivory Parchment
+    const diplomaPaperMat = new THREE.MeshStandardMaterial({
+      color: 0xfaf8f5,
+      roughness: 0.4,
+      metalness: 0.05,
+    });
+
+    // Royal Navy Satin Ribbon
+    const diplomaRibbonMat = new THREE.MeshStandardMaterial({
+      color: 0x1e3a8a,
+      roughness: 0.25,
+      metalness: 0.7,
+      emissive: 0x1e293b,
       emissiveIntensity: 0.2,
     });
 
-    const diplomaPaperMat = new THREE.MeshStandardMaterial({
-      color: 0xfff1f2,
-      roughness: 0.35,
-      metalness: 0.1,
-    });
-
-    const diplomaRibbonMat = new THREE.MeshStandardMaterial({
-      color: 0x9f1239,
-      roughness: 0.25,
-      metalness: 0.7,
-      emissive: 0xbe123c,
-      emissiveIntensity: 0.3,
-    });
-
     // 3.1 Mortarboard Upper Square Plaque
-    const boardGeo = new THREE.BoxGeometry(2.6, 0.08, 2.6);
+    const boardGeo = new THREE.BoxGeometry(2.65, 0.07, 2.65);
     const boardMesh = new THREE.Mesh(boardGeo, capFabricMaterial);
     boardMesh.position.y = 0.55;
     boardMesh.castShadow = true;
     boardMesh.receiveShadow = true;
     capGroup.add(boardMesh);
 
-    // Rose Gold Edge trim for the board
+    // Delicate Gold Beveled Edge
     const edges = new THREE.EdgesGeometry(boardGeo);
-    const lineMat = new THREE.LineBasicMaterial({ color: 0xfb7185, linewidth: 2 });
+    const lineMat = new THREE.LineBasicMaterial({ color: 0xc5a059, transparent: true, opacity: 0.75 });
     const boardWireframe = new THREE.LineSegments(edges, lineMat);
     boardMesh.add(boardWireframe);
 
-    // 3.2 Skull Cap (Underneath base)
-    const skullCapGeo = new THREE.CylinderGeometry(0.85, 0.72, 0.7, 32);
+    // 3.2 Skull Cap
+    const skullCapGeo = new THREE.CylinderGeometry(0.86, 0.72, 0.72, 36);
     const skullCap = new THREE.Mesh(skullCapGeo, capFabricMaterial);
     skullCap.position.y = 0.18;
     skullCap.castShadow = true;
@@ -150,127 +142,77 @@ export const ThreeGraduationScene: React.FC<ThreeGraduationSceneProps> = ({ onTo
 
     // 3.4 Golden Tassel Cord & Pendant
     const tasselGroup = new THREE.Group();
-    // Cord
     const cordCurve = new THREE.CatmullRomCurve3([
       new THREE.Vector3(0, 0.61, 0),
-      new THREE.Vector3(0.6, 0.60, 0.6),
-      new THREE.Vector3(1.35, 0.52, 1.35),
-      new THREE.Vector3(1.42, 0.1, 1.42),
+      new THREE.Vector3(0.65, 0.60, 0.65),
+      new THREE.Vector3(1.38, 0.50, 1.38),
+      new THREE.Vector3(1.45, 0.1, 1.45),
     ]);
-    const cordGeo = new THREE.TubeGeometry(cordCurve, 20, 0.025, 8, false);
+    const cordGeo = new THREE.TubeGeometry(cordCurve, 20, 0.026, 8, false);
     const cordMesh = new THREE.Mesh(cordGeo, goldMaterial);
     tasselGroup.add(cordMesh);
 
     // Tassel Fringe / Hang
-    const tasselHangGeo = new THREE.CylinderGeometry(0.06, 0.14, 0.45, 16);
+    const tasselHangGeo = new THREE.CylinderGeometry(0.06, 0.15, 0.48, 20);
     const tasselHang = new THREE.Mesh(tasselHangGeo, goldMaterial);
-    tasselHang.position.set(1.42, -0.1, 1.42);
+    tasselHang.position.set(1.45, -0.1, 1.45);
     tasselGroup.add(tasselHang);
     capGroup.add(tasselGroup);
 
-    // 3.5 Diploma Scroll (Under/Next to the cap)
+    // 3.5 Diploma Scroll
     const diplomaGroup = new THREE.Group();
-    diplomaGroup.position.set(0, -0.65, 0.3);
+    diplomaGroup.position.set(0, -0.68, 0.35);
     diplomaGroup.rotation.z = Math.PI / 10;
     diplomaGroup.rotation.y = -Math.PI / 8;
 
     // Scroll Roll
-    const scrollGeo = new THREE.CylinderGeometry(0.24, 0.24, 2.2, 32);
+    const scrollGeo = new THREE.CylinderGeometry(0.25, 0.25, 2.3, 32);
     const scrollMesh = new THREE.Mesh(scrollGeo, diplomaPaperMat);
     scrollMesh.rotation.z = Math.PI / 2;
+    scrollMesh.castShadow = true;
     diplomaGroup.add(scrollMesh);
 
-    // Red Ribbon Ring
-    const ribbonGeo = new THREE.CylinderGeometry(0.26, 0.26, 0.25, 32);
+    // Royal Ribbon Ring
+    const ribbonGeo = new THREE.CylinderGeometry(0.27, 0.27, 0.28, 32);
     const ribbonMesh = new THREE.Mesh(ribbonGeo, diplomaRibbonMat);
     ribbonMesh.rotation.z = Math.PI / 2;
     diplomaGroup.add(ribbonMesh);
 
-    // Gold Seal on ribbon
-    const sealGeo = new THREE.CylinderGeometry(0.12, 0.12, 0.04, 24);
+    // Gold Medallion Seal on ribbon
+    const sealGeo = new THREE.CylinderGeometry(0.14, 0.14, 0.04, 24);
     const sealMesh = new THREE.Mesh(sealGeo, goldMaterial);
-    sealMesh.position.set(0, 0.26, 0);
+    sealMesh.position.set(0, 0.27, 0);
     diplomaGroup.add(sealMesh);
 
     capGroup.add(diplomaGroup);
 
-    // 3.6 Orbiting Golden 3D Stars
+    // 3.6 Orbiting 3D Golden Octahedron Stars
     const starsGroup = new THREE.Group();
-    const starGeo = new THREE.OctahedronGeometry(0.12, 0);
-    for (let i = 0; i < 6; i++) {
+    starsGroupRef.current = starsGroup;
+    const starGeo = new THREE.OctahedronGeometry(0.11, 0);
+    for (let i = 0; i < 5; i++) {
       const starMesh = new THREE.Mesh(starGeo, goldMaterial);
-      const angle = (i / 6) * Math.PI * 2;
-      const radius = 2.0;
-      starMesh.position.set(Math.cos(angle) * radius, ((i % 3) - 1) * 0.45, Math.sin(angle) * radius);
+      const angle = (i / 5) * Math.PI * 2;
+      const radius = 2.1;
+      starMesh.position.set(Math.cos(angle) * radius, ((i % 3) - 1) * 0.4, Math.sin(angle) * radius);
       starsGroup.add(starMesh);
     }
     capGroup.add(starsGroup);
-    const ringsGroup = new THREE.Group();
-    ringsRef.current = ringsGroup;
 
-    const ringMat1 = new THREE.MeshBasicMaterial({
-      color: 0xfb7185,
-      wireframe: true,
+    // 4. Subtle Marble / Gold Pedestal Ring
+    const floorGeo = new THREE.RingGeometry(1.6, 2.4, 48);
+    const floorMat = new THREE.MeshBasicMaterial({
+      color: 0xc5a059,
       transparent: true,
-      opacity: 0.45,
+      opacity: 0.25,
+      side: THREE.DoubleSide,
     });
-    const ringGeo1 = new THREE.TorusGeometry(2.2, 0.03, 16, 64);
-    const ringMesh1 = new THREE.Mesh(ringGeo1, ringMat1);
-    ringMesh1.rotation.x = Math.PI / 3;
-    ringsGroup.add(ringMesh1);
+    const floorMesh = new THREE.Mesh(floorGeo, floorMat);
+    floorMesh.rotation.x = Math.PI / 2;
+    floorMesh.position.y = -1.25;
+    scene.add(floorMesh);
 
-    const ringMat2 = new THREE.MeshBasicMaterial({
-      color: 0xfcd34d,
-      wireframe: true,
-      transparent: true,
-      opacity: 0.4,
-    });
-    const ringGeo2 = new THREE.TorusGeometry(2.5, 0.02, 16, 64);
-    const ringMesh2 = new THREE.Mesh(ringGeo2, ringMat2);
-    ringMesh2.rotation.y = Math.PI / 4;
-    ringMesh2.rotation.x = -Math.PI / 6;
-    ringsGroup.add(ringMesh2);
-
-    scene.add(ringsGroup);
-
-    // 5. Ambient Velvet Cosmic Star Particles
-    const particleCount = 450;
-    const particleGeo = new THREE.BufferGeometry();
-    const positions = new Float32Array(particleCount * 3);
-    const colors = new Float32Array(particleCount * 3);
-
-    const roseColor = new THREE.Color(0xfb7185);
-    const wineColor = new THREE.Color(0xbe123c);
-    const goldColor = new THREE.Color(0xfcd34d);
-
-    for (let i = 0; i < particleCount; i++) {
-      positions[i * 3] = (Math.random() - 0.5) * 14;
-      positions[i * 3 + 1] = (Math.random() - 0.5) * 10;
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 8;
-
-      const pick = Math.random();
-      const col = pick < 0.45 ? roseColor : pick < 0.8 ? goldColor : wineColor;
-      colors[i * 3] = col.r;
-      colors[i * 3 + 1] = col.g;
-      colors[i * 3 + 2] = col.b;
-    }
-
-    particleGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    particleGeo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-
-    const particleMat = new THREE.PointsMaterial({
-      size: 0.05,
-      vertexColors: true,
-      transparent: true,
-      opacity: 0.75,
-      blending: THREE.AdditiveBlending,
-    });
-
-    const particles = new THREE.Points(particleGeo, particleMat);
-    particlesRef.current = particles;
-    scene.add(particles);
-
-    // 6. Handle Mouse and Dragging
+    // 5. Handle Mouse and Dragging
     const handleMouseMove = (e: MouseEvent) => {
       const rect = container.getBoundingClientRect();
       const x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
@@ -302,7 +244,6 @@ export const ThreeGraduationScene: React.FC<ThreeGraduationSceneProps> = ({ onTo
       mouseRef.current.isDragging = false;
     };
 
-    // Touch support for Mobile
     const handleTouchStart = (e: TouchEvent) => {
       if (e.touches.length === 1) {
         mouseRef.current.isDragging = true;
@@ -336,7 +277,7 @@ export const ThreeGraduationScene: React.FC<ThreeGraduationSceneProps> = ({ onTo
     container.addEventListener('touchmove', handleTouchMove, { passive: true });
     window.addEventListener('touchend', handleTouchEnd);
 
-    // 7. Animation Loop
+    // 6. Animation Loop
     let clock = new THREE.Clock();
     let animationFrameId: number;
 
@@ -354,19 +295,16 @@ export const ThreeGraduationScene: React.FC<ThreeGraduationSceneProps> = ({ onTo
         const p = tossAnimationRef.current.progress;
 
         if (p < 0.5) {
-          // Shooting up & spinning
           const upFactor = Math.sin(p * Math.PI);
           capGroupRef.current.position.y = tossAnimationRef.current.initialY + upFactor * 2.8;
           capGroupRef.current.rotation.y += 0.18;
           capGroupRef.current.rotation.z = Math.sin(p * 10) * 0.35;
         } else if (p < 1.0) {
-          // Floating down smoothly with damping
           const downFactor = Math.sin(p * Math.PI);
           capGroupRef.current.position.y = tossAnimationRef.current.initialY + downFactor * 2.8;
           capGroupRef.current.rotation.y += 0.08;
           capGroupRef.current.rotation.z = Math.sin(p * 8) * 0.15;
         } else {
-          // Finish
           tossAnimationRef.current.active = false;
           capGroupRef.current.position.y = tossAnimationRef.current.initialY;
           setIsTossing(false);
@@ -374,50 +312,40 @@ export const ThreeGraduationScene: React.FC<ThreeGraduationSceneProps> = ({ onTo
         }
       } else if (capGroupRef.current && !mouseRef.current.isDragging) {
         // Natural subtle floating idle animation
-        capGroupRef.current.position.y = Math.sin(elapsedTime * 1.5) * 0.12;
+        capGroupRef.current.position.y = Math.sin(elapsedTime * 1.5) * 0.1;
         capGroupRef.current.rotation.y += 0.005;
-        // Subtle tilt with mouse
-        capGroupRef.current.rotation.x = 0.2 + mouseRef.current.y * 0.3;
-        capGroupRef.current.rotation.z = -mouseRef.current.x * 0.2;
+        capGroupRef.current.rotation.x = 0.2 + mouseRef.current.y * 0.25;
+        capGroupRef.current.rotation.z = -mouseRef.current.x * 0.18;
       }
 
-      // Move cursor light to illuminate 3D model dynamically
-      cursorLight.position.x = mouseRef.current.x * 4.5;
-      cursorLight.position.y = mouseRef.current.y * 3.5 + 0.5;
+      // Cursor light tracking
+      cursorLight.position.x = mouseRef.current.x * 3.5;
+      cursorLight.position.y = mouseRef.current.y * 2.5 + 0.5;
 
       // Rotate 3D Stars Group
-      starsGroup.rotation.y = elapsedTime * 0.4;
-      starsGroup.children.forEach((star) => {
-        star.rotation.x += 0.02;
-        star.rotation.y += 0.03;
-      });
-
-      // Rotate Floor Disc
-      floorMesh.rotation.z = -elapsedTime * 0.15;
-
-      // Rotate Hologram Rings
-      if (ringsRef.current) {
-        ringsRef.current.rotation.z = elapsedTime * 0.3;
-        ringsRef.current.rotation.y = elapsedTime * 0.2;
+      if (starsGroupRef.current) {
+        starsGroupRef.current.rotation.y = elapsedTime * 0.35;
+        starsGroupRef.current.children.forEach((star) => {
+          star.rotation.x += 0.02;
+          star.rotation.y += 0.03;
+        });
       }
 
-      // Rotate Particle field slowly
-      if (particlesRef.current) {
-        particlesRef.current.rotation.y = elapsedTime * 0.05;
-      }
+      // Rotate Floor Disc gently
+      floorMesh.rotation.z = -elapsedTime * 0.1;
 
       renderer.render(scene, camera);
     };
 
     animate();
 
-    // 8. Resize Handler
+    // 7. Resize Handler
     const handleResize = () => {
       if (!container) return;
       const newW = container.clientWidth;
       const newH = container.clientHeight;
       camera.aspect = newW / newH;
-      camera.position.z = newW < 500 ? 7.2 : 6.2;
+      camera.position.z = newW < 500 ? 7.0 : 6.0;
       camera.updateProjectionMatrix();
       renderer.setSize(newW, newH);
     };
@@ -452,28 +380,28 @@ export const ThreeGraduationScene: React.FC<ThreeGraduationSceneProps> = ({ onTo
       initialY: capGroupRef.current.position.y,
     };
 
-    // Rose Gold & Champagne Gold Confetti Explosion
+    // Elegant Gold & Champagne Confetti
     confetti({
-      particleCount: 130,
-      spread: 95,
+      particleCount: 120,
+      spread: 90,
       origin: { y: 0.6 },
-      colors: ['#fb7185', '#f43f5e', '#fbbf24', '#fef08a', '#fda4af', '#be123c'],
+      colors: ['#D4AF37', '#C5A059', '#F3E5AB', '#FFFFFF', '#1E3A8A'],
     });
 
     setTimeout(() => {
       confetti({
-        particleCount: 80,
+        particleCount: 75,
         angle: 60,
         spread: 60,
         origin: { x: 0 },
-        colors: ['#fb7185', '#fcd34d'],
+        colors: ['#D4AF37', '#C5A059', '#FFFFFF'],
       });
       confetti({
-        particleCount: 80,
+        particleCount: 75,
         angle: 120,
         spread: 60,
         origin: { x: 1 },
-        colors: ['#be123c', '#f43f5e'],
+        colors: ['#1E3A8A', '#D4AF37', '#FFFFFF'],
       });
     }, 250);
   };
@@ -486,7 +414,7 @@ export const ThreeGraduationScene: React.FC<ThreeGraduationSceneProps> = ({ onTo
   };
 
   return (
-    <div className="relative w-full h-[340px] sm:h-[440px] md:h-[520px] select-none flex items-center justify-center">
+    <div className="relative w-full h-[350px] sm:h-[440px] md:h-[500px] select-none flex items-center justify-center">
       {/* 3D WebGL Canvas Container */}
       <div
         ref={containerRef}
@@ -494,43 +422,43 @@ export const ThreeGraduationScene: React.FC<ThreeGraduationSceneProps> = ({ onTo
         title="Kéo chuột hoặc vuốt để xoay mô hình 3D"
       />
 
-      {/* Rose Gold UI Badge Overlay */}
+      {/* Luxury Gold Badge Overlay */}
       <div className="absolute top-3 left-3 sm:top-4 sm:left-4 pointer-events-none">
-        <div className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-rose-950/80 border border-rose-500/30 backdrop-blur-md text-[10px] sm:text-xs font-mono-code text-rose-300 shadow-lg shadow-rose-950/50">
-          <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-rose-400 animate-ping" />
-          <span>3D_HOLO_VIEWER // 360°</span>
+        <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 py-1.5 rounded-full bg-white/90 border border-[#C5A059]/40 backdrop-blur-md text-[11px] font-medium text-[#8A6D3B] shadow-md shadow-slate-900/5">
+          <span className="w-2 h-2 rounded-full bg-[#C5A059] animate-ping" />
+          <span className="tracking-wide">TƯƠNG TÁC 3D // 360°</span>
         </div>
       </div>
 
-      {/* Drag & Toss Hint Controls */}
+      {/* Drag & Toss Controls */}
       <div className="absolute bottom-3 sm:bottom-4 inset-x-3 sm:inset-x-4 flex items-center justify-between gap-2 pointer-events-auto">
-        <div className="text-[10px] sm:text-[11px] font-mono-code text-rose-200/70 bg-rose-950/70 backdrop-blur-md px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-lg border border-rose-800/40 hidden sm:flex items-center gap-1.5">
-          <span className="text-amber-400 font-bold">🖱️</span>
-          <span>Kéo/vuốt xoay 360°</span>
+        <div className="text-[11px] text-slate-500 bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-xl border border-[#C5A059]/25 hidden sm:flex items-center gap-1.5 shadow-sm">
+          <span>✨</span>
+          <span>Rê chuột để xoay 360°</span>
         </div>
 
         <div className="flex items-center gap-2 ml-auto">
           {isInteracting && (
             <button
               onClick={resetRotation}
-              className="p-2 sm:p-2.5 rounded-xl bg-rose-950/80 hover:bg-rose-900 border border-rose-800/60 text-rose-200 hover:text-white transition-all text-xs"
+              className="p-2.5 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-600 hover:text-slate-900 transition-all text-xs shadow-sm"
               title="Đặt lại góc xoay"
             >
-              <RotateCcw className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+              <RotateCcw className="w-3.5 h-3.5" />
             </button>
           )}
 
           <button
             onClick={triggerCapToss}
             disabled={isTossing}
-            className={`flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-xl font-bold text-xs sm:text-sm tracking-wider uppercase transition-all shadow-lg ${
+            className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm tracking-wide transition-all shadow-md ${
               isTossing
-                ? 'bg-rose-900/60 text-rose-300 cursor-not-allowed'
-                : 'bg-gradient-to-r from-rose-600 via-pink-600 to-amber-500 hover:from-rose-500 hover:to-amber-400 text-white shadow-rose-900/50 hover:scale-105 active:scale-95'
+                ? 'bg-slate-200 text-slate-400 cursor-not-allowed'
+                : 'bg-gradient-to-r from-[#1E293B] via-[#334155] to-[#1E293B] hover:from-[#0F172A] hover:to-[#0F172A] text-[#F3E5AB] border border-[#C5A059]/50 shadow-slate-900/10 hover:scale-105 active:scale-95'
             }`}
           >
-            <Sparkles className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${isTossing ? 'animate-spin' : 'animate-bounce'}`} />
-            <span>{isTossing ? 'ĐANG TUNG...' : '🎓 TUNG MŨ!'}</span>
+            <Sparkles className={`w-3.5 h-3.5 text-[#D4AF37] ${isTossing ? 'animate-spin' : 'animate-bounce'}`} />
+            <span>{isTossing ? 'Đang Tung Mũ...' : '🎓 Tung Mũ Chúc Mừng!'}</span>
           </button>
         </div>
       </div>

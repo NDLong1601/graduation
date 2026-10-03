@@ -45,7 +45,6 @@ export const CountdownSection: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // Google Calendar link generator
   const getGoogleCalendarUrl = () => {
     const title = encodeURIComponent(`Lễ Tốt Nghiệp - ${GRADUATION_CONFIG.graduate.fullName}`);
     const details = encodeURIComponent(
@@ -54,14 +53,12 @@ export const CountdownSection: React.FC = () => {
     const location = encodeURIComponent(
       `${GRADUATION_CONFIG.event.locationName}, ${GRADUATION_CONFIG.event.address}`
     );
-    // Format: YYYYMMDDTHHmmssZ
-    const startDate = '20261115T003000Z'; // 07:30 UTC+7
-    const endDate = '20261115T050000Z';   // 12:00 UTC+7
+    const startDate = '20261016T060000Z'; // 13:00 UTC+7
+    const endDate = '20261016T080000Z';   // 15:00 UTC+7
 
     return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&details=${details}&location=${location}&dates=${startDate}/${endDate}`;
   };
 
-  // Download .ics file
   const downloadIcs = () => {
     sound.playClick();
     const icsData = [
@@ -72,8 +69,8 @@ export const CountdownSection: React.FC = () => {
       `SUMMARY:Lễ Tốt Nghiệp - ${GRADUATION_CONFIG.graduate.fullName}`,
       `DESCRIPTION:Tham dự Lễ Tốt Nghiệp của ${GRADUATION_CONFIG.graduate.fullName}`,
       `LOCATION:${GRADUATION_CONFIG.event.locationName}, ${GRADUATION_CONFIG.event.address}`,
-      'DTSTART:20261115T073000',
-      'DTEND:20261115T120000',
+      'DTSTART:20261016T130000',
+      'DTEND:20261016T150000',
       'STATUS:CONFIRMED',
       'END:VEVENT',
       'END:VCALENDAR',
@@ -90,29 +87,26 @@ export const CountdownSection: React.FC = () => {
   };
 
   const timerUnits = [
-    { label: 'NGÀY', value: timeLeft.days, color: 'text-rose-400', border: 'border-rose-500/30' },
-    { label: 'GIỜ', value: timeLeft.hours, color: 'text-amber-300', border: 'border-amber-500/30' },
-    { label: 'PHÚT', value: timeLeft.minutes, color: 'text-pink-400', border: 'border-pink-500/30' },
-    { label: 'GIÂY', value: timeLeft.seconds, color: 'text-emerald-400', border: 'border-emerald-500/30' },
+    { label: 'NGÀY', value: timeLeft.days },
+    { label: 'GIỜ', value: timeLeft.hours },
+    { label: 'PHÚT', value: timeLeft.minutes },
+    { label: 'GIÂY', value: timeLeft.seconds },
   ];
 
   return (
     <section id="countdown" className="py-12 relative">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="cyber-card rounded-3xl p-6 sm:p-10 border-rose-500/20 text-center relative overflow-hidden">
-          {/* Subtle radar scanline background effect */}
-          <div className="absolute inset-0 bg-gradient-to-b from-rose-500/5 via-transparent to-amber-500/5 pointer-events-none" />
-
+        <div className="bg-white/90 rounded-3xl p-6 sm:p-10 border border-[#C5A059]/30 text-center relative overflow-hidden shadow-xl shadow-slate-900/5">
           {/* Title */}
           <div className="relative z-10 space-y-2 mb-8">
-            <div className="inline-flex items-center gap-2 text-xs font-mono-code text-rose-300 px-3 py-1 rounded-full bg-rose-950/60 border border-rose-500/30">
-              <Clock className="w-3.5 h-3.5 text-amber-400" />
-              <span>TIME_COUNTDOWN // CHẠM TAY VÀO KHOẢNH KHẮC</span>
+            <div className="inline-flex items-center gap-2 text-xs font-semibold text-[#8A6D3B] px-3.5 py-1 rounded-full bg-[#F7F4EC] border border-[#C5A059]/35">
+              <Clock className="w-3.5 h-3.5 text-[#C5A059]" />
+              <span className="tracking-wider uppercase">ĐỒNG HỒ ĐẾM NGƯỢC</span>
             </div>
-            <h2 className="text-2xl sm:text-3xl font-tech font-bold text-white tracking-wide">
-              ĐẾM NGƯỢC ĐẾN GIỜ G
+            <h2 className="text-2xl sm:text-3xl font-serif-luxury font-bold text-[#0F172A] tracking-tight">
+              Đếm Ngược Đến Giờ G
             </h2>
-            <p className="text-xs sm:text-sm text-rose-200/80">
+            <p className="text-xs sm:text-sm text-slate-600">
               {GRADUATION_CONFIG.event.date} — {GRADUATION_CONFIG.event.time}
             </p>
           </div>
@@ -122,12 +116,12 @@ export const CountdownSection: React.FC = () => {
             {timerUnits.map((unit, idx) => (
               <div
                 key={idx}
-                className={`relative bg-rose-950/50 backdrop-blur-md rounded-2xl p-4 sm:p-6 border ${unit.border} shadow-lg shadow-rose-950/40`}
+                className="bg-[#FCFBF8] rounded-2xl p-4 sm:p-6 border border-[#C5A059]/30 shadow-sm"
               >
-                <div className={`text-3xl sm:text-5xl font-tech font-extrabold ${unit.color} tracking-wider`}>
+                <div className="text-3xl sm:text-5xl font-serif-luxury font-bold text-[#0F172A] tracking-tight">
                   {String(unit.value).padStart(2, '0')}
                 </div>
-                <div className="text-[10px] sm:text-xs font-mono-code text-rose-300/70 mt-1 uppercase tracking-widest">
+                <div className="text-[10px] sm:text-xs font-semibold text-[#8A6D3B] mt-1 uppercase tracking-widest">
                   {unit.label}
                 </div>
               </div>
@@ -141,17 +135,17 @@ export const CountdownSection: React.FC = () => {
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => sound.playClick()}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-rose-950/70 hover:bg-rose-900/70 border border-rose-500/40 text-rose-200 text-xs sm:text-sm font-semibold transition-all hover:scale-105 shadow-md shadow-rose-950/40"
+              className="flex items-center gap-2 px-5 py-3 rounded-xl bg-[#0F172A] hover:bg-[#1E293B] text-[#F3E5AB] border border-[#C5A059]/40 text-xs sm:text-sm font-semibold transition-all hover:scale-105 shadow-md shadow-slate-900/10"
             >
-              <CalendarPlus className="w-4 h-4 text-rose-400" />
+              <CalendarPlus className="w-4 h-4 text-[#D4AF37]" />
               <span>Thêm vào Google Calendar</span>
             </a>
 
             <button
               onClick={downloadIcs}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-amber-950/70 hover:bg-amber-900/70 border border-amber-500/40 text-amber-200 text-xs sm:text-sm font-semibold transition-all hover:scale-105 shadow-md shadow-amber-950/40"
+              className="flex items-center gap-2 px-5 py-3 rounded-xl bg-white hover:bg-slate-50 border border-[#C5A059]/40 text-slate-800 text-xs sm:text-sm font-semibold transition-all hover:scale-105 shadow-sm"
             >
-              <Download className="w-4 h-4 text-amber-400" />
+              <Download className="w-4 h-4 text-[#C5A059]" />
               <span>Tải file Lịch (.ics) cho iPhone/PC</span>
             </button>
           </div>

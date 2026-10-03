@@ -1,7 +1,7 @@
 import React from 'react';
 import { GRADUATION_CONFIG } from '../config';
 import { sound } from '../utils/audioFx';
-import { ShieldCheck, Sparkles, KeyRound, Award, Calendar, MapPin } from 'lucide-react';
+import { Sparkles, Calendar, MapPin, MailOpen } from 'lucide-react';
 
 interface AccessHologramModalProps {
   isOpen: boolean;
@@ -17,79 +17,72 @@ export const AccessHologramModal: React.FC<AccessHologramModalProps> = ({ isOpen
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#120409]/85 backdrop-blur-xl animate-fadeIn">
-      {/* Glow backgrounds */}
-      <div className="absolute w-[320px] md:w-[600px] h-[320px] md:h-[600px] bg-gradient-to-tr from-rose-600/25 via-pink-600/25 to-amber-500/20 rounded-full blur-3xl pointer-events-none animate-pulse-glow" />
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-md animate-fadeIn">
+      {/* Soft Ambient Gold Glow */}
+      <div className="absolute w-[350px] md:w-[600px] h-[350px] md:h-[600px] bg-gradient-to-tr from-[#C5A059]/20 via-[#DFBA73]/15 to-amber-200/10 rounded-full blur-3xl pointer-events-none" />
 
-      {/* Cyber Card Modal */}
-      <div className="relative w-full max-w-lg cyber-card rounded-3xl p-6 sm:p-8 border border-rose-500/30 shadow-2xl shadow-rose-950/70">
-        {/* Top Cyber HUD Bar */}
-        <div className="flex items-center justify-between pb-4 border-b border-rose-500/20 mb-6">
-          <div className="flex items-center gap-2">
-            <ShieldCheck className="w-5 h-5 text-rose-400" />
-            <span className="font-tech text-xs tracking-widest text-rose-300">
-              INVITATION_PROTOCOL // VELVET_EDITION
-            </span>
-          </div>
-          <span className="font-mono-code text-[11px] px-2 py-0.5 rounded bg-rose-950/80 border border-rose-500/30 text-rose-300">
-            v2026.10
-          </span>
-        </div>
+      {/* Luxury Paper Card with Gold Frame */}
+      <div className="relative w-full max-w-lg bg-[#FCFBF9] rounded-3xl p-6 sm:p-9 border border-[#C5A059]/40 shadow-2xl shadow-slate-900/15 overflow-hidden">
+        {/* Decorative Golden Corner Flourishes */}
+        <div className="absolute top-3 left-3 w-6 h-6 border-t-2 border-l-2 border-[#C5A059]/60 rounded-tl-sm pointer-events-none" />
+        <div className="absolute top-3 right-3 w-6 h-6 border-t-2 border-r-2 border-[#C5A059]/60 rounded-tr-sm pointer-events-none" />
+        <div className="absolute bottom-3 left-3 w-6 h-6 border-b-2 border-l-2 border-[#C5A059]/60 rounded-bl-sm pointer-events-none" />
+        <div className="absolute bottom-3 right-3 w-6 h-6 border-b-2 border-r-2 border-[#C5A059]/60 rounded-br-sm pointer-events-none" />
 
-        {/* Hologram Card Body */}
-        <div className="text-center space-y-4">
-          <div className="inline-flex p-4 rounded-2xl bg-gradient-to-br from-rose-500/20 to-amber-500/20 border border-rose-500/40 text-rose-300 animate-float">
-            <Award className="w-12 h-12 text-amber-300" />
+        {/* Inner Gold Inset Border */}
+        <div className="border border-[#C5A059]/25 rounded-2xl p-5 sm:p-7 text-center space-y-5">
+          {/* Wax Seal Medallion */}
+          <div className="inline-flex p-4 rounded-full bg-gradient-to-br from-[#991B1B] via-[#7F1D1D] to-[#B91C1C] border-2 border-[#C5A059] text-[#FDE68A] shadow-lg shadow-red-950/30 animate-float">
+            <span className="text-3xl">🎓</span>
           </div>
 
-          <div className="space-y-1">
-            <span className="text-xs font-mono-code text-rose-400 tracking-widest uppercase">
-              THƯ MỜI THAM DỰ SỰ KIỆN
+          <div className="space-y-2">
+            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#8A6D3B] block">
+              Thư Mời Tham Dự
             </span>
-            <h1 className="text-2xl sm:text-3xl font-tech font-extrabold text-white tracking-wide">
+            <h1 className="text-2xl sm:text-3xl font-serif-luxury font-bold text-[#0F172A] tracking-tight">
               {GRADUATION_CONFIG.event.title}
             </h1>
-            <p className="text-sm font-medium text-amber-300">
-              Tân Khoa: <span className="font-bold text-white uppercase">{GRADUATION_CONFIG.graduate.fullName}</span>
-            </p>
-            <p className="text-xs text-rose-200/80">
-              {GRADUATION_CONFIG.graduate.degree} • {GRADUATION_CONFIG.graduate.major}
-            </p>
-          </div>
-
-          {/* Mini info badge */}
-          <div className="grid grid-cols-2 gap-2 text-left bg-rose-950/50 p-3 rounded-xl border border-rose-900/60 text-xs">
-            <div className="flex items-center gap-2 text-rose-200">
-              <Calendar className="w-4 h-4 text-amber-400 shrink-0" />
-              <span className="truncate">{GRADUATION_CONFIG.event.date.split(',')[0]} (16/10)</span>
-            </div>
-            <div className="flex items-center gap-2 text-rose-200">
-              <MapPin className="w-4 h-4 text-rose-400 shrink-0" />
-              <span className="truncate">{GRADUATION_CONFIG.graduate.university}</span>
+            <div className="pt-1">
+              <p className="text-xl sm:text-2xl font-serif-luxury font-bold gold-foil-text">
+                {GRADUATION_CONFIG.graduate.fullName}
+              </p>
+              <p className="text-xs sm:text-sm text-slate-600 font-medium mt-0.5">
+                {GRADUATION_CONFIG.graduate.degree} • {GRADUATION_CONFIG.graduate.major}
+              </p>
+              <p className="text-xs text-slate-500">
+                {GRADUATION_CONFIG.graduate.university}
+              </p>
             </div>
           </div>
 
-          <p className="text-xs text-rose-200/70 italic">
-            "Sự hiện diện và lời chúc của bạn là niềm vinh hạnh to lớn cho mình trong ngày trọng đại này!"
+          {/* Event Quick Info */}
+          <div className="grid grid-cols-2 gap-2 text-left bg-[#F7F4EC] p-3 rounded-xl border border-[#C5A059]/20 text-xs">
+            <div className="flex items-center gap-2 text-slate-700">
+              <Calendar className="w-4 h-4 text-[#C5A059] shrink-0" />
+              <span className="truncate font-medium">{GRADUATION_CONFIG.event.date.split(',')[0]} (16/10)</span>
+            </div>
+            <div className="flex items-center gap-2 text-slate-700">
+              <MapPin className="w-4 h-4 text-[#C5A059] shrink-0" />
+              <span className="truncate font-medium">Hà Nội</span>
+            </div>
+          </div>
+
+          <p className="text-xs text-slate-500 italic max-w-sm mx-auto leading-relaxed">
+            "Sự hiện diện của người thân và bạn bè là niềm vinh hạnh to lớn cho Long trong ngày tốt nghiệp trọng đại này!"
           </p>
 
-          {/* Action button */}
+          {/* Open Button */}
           <div className="pt-2">
             <button
               onClick={handleUnlock}
-              className="w-full relative group overflow-hidden py-3.5 px-6 rounded-2xl bg-gradient-to-r from-rose-600 via-pink-600 to-amber-500 text-white font-tech font-bold text-sm tracking-wider uppercase shadow-lg shadow-rose-950/60 hover:shadow-rose-500/50 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+              className="w-full py-3.5 px-6 rounded-2xl bg-[#0F172A] hover:bg-[#1E293B] text-[#F3E5AB] font-semibold text-sm tracking-wider uppercase shadow-lg shadow-slate-900/15 border border-[#C5A059]/40 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2"
             >
-              <KeyRound className="w-4 h-4 text-rose-200 group-hover:rotate-45 transition-transform" />
-              <span>MỞ THIỆP MỜI TRÂN TRỌNG</span>
-              <Sparkles className="w-4 h-4 text-amber-300 animate-spin" />
+              <MailOpen className="w-4 h-4 text-[#D4AF37]" />
+              <span>TRÂN TRỌNG MỞ THIỆP MỜI</span>
+              <Sparkles className="w-4 h-4 text-[#D4AF37] animate-spin" />
             </button>
           </div>
-        </div>
-
-        {/* Footer tiny HUD info */}
-        <div className="mt-6 pt-3 border-t border-slate-800/80 flex items-center justify-between text-[10px] font-mono-code text-slate-500">
-          <span>CODE: {GRADUATION_CONFIG.graduate.studentId || 'GRADUATE_2026'}</span>
-          <span>STATUS: ACCESS_GRANTED</span>
         </div>
       </div>
     </div>
