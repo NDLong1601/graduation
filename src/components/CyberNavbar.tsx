@@ -93,9 +93,9 @@ export const CyberNavbar: React.FC<CyberNavbarProps> = ({ onOpenInvite, onReplay
                 onReplayIntro();
               }}
               className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-amber-50 border border-slate-200 text-slate-700 hover:text-[#8A6D3B] text-xs font-medium transition-all shadow-sm"
-              title="Xem lại 3D Intro Đại Cảnh Pháo Hoa Đêm Hội"
+              title="Xem lại 3D Intro Sân Khấu Vinh Danh & Rèm Nhung"
             >
-              <span>🎆 Pháo Hoa 3D</span>
+              <span>🎭 Sân Khấu 3D</span>
             </button>
           )}
 

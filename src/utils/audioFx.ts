@@ -843,6 +843,97 @@ class SoundFX {
       // Audio fallback
     }
   }
+
+  // Velvet curtain sweep & stage reveal
+  public playCurtainOpen() {
+    if (this.isMuted) return;
+    try {
+      this.initContext();
+      if (!this.ctx) return;
+
+      const st = this.ctx.currentTime;
+
+      // 1. Soft velvet whoosh
+      const bufferSize = Math.floor(this.ctx.sampleRate * 1.2);
+      const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        data[i] = (Math.random() * 2 - 1) * Math.sin((i / bufferSize) * Math.PI);
+      }
+      const noise = this.ctx.createBufferSource();
+      noise.buffer = buffer;
+
+      const filter = this.ctx.createBiquadFilter();
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(450, st);
+      filter.frequency.linearRampToValueAtTime(950, st + 0.6);
+      filter.frequency.linearRampToValueAtTime(300, st + 1.2);
+
+      const noiseGain = this.ctx.createGain();
+      noiseGain.gain.setValueAtTime(0, st);
+      noiseGain.gain.linearRampToValueAtTime(0.12, st + 0.3);
+      noiseGain.gain.exponentialRampToValueAtTime(0.001, st + 1.2);
+
+      noise.connect(filter);
+      filter.connect(noiseGain);
+      noiseGain.connect(this.ctx.destination);
+      noise.start(st);
+
+      // 2. Harp glissando arpeggio
+      const notes = [349.23, 440.0, 523.25, 698.46, 880.0, 1046.5];
+      notes.forEach((freq, idx) => {
+        if (!this.ctx) return;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, st + idx * 0.08);
+
+        const t = st + idx * 0.08;
+        gain.gain.setValueAtTime(0, t);
+        gain.gain.linearRampToValueAtTime(0.09, t + 0.04);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.9);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(t);
+        osc.stop(t + 0.95);
+      });
+    } catch {
+      // Audio fallback
+    }
+  }
+
+  // Grand theatre fanfare
+  public playStageFanfare() {
+    if (this.isMuted) return;
+    try {
+      this.initContext();
+      if (!this.ctx) return;
+
+      const st = this.ctx.currentTime;
+      // Majestic F major trumpet fanfare
+      const brassNotes = [349.23, 440.0, 523.25, 698.46, 880.0];
+      brassNotes.forEach((freq, idx) => {
+        if (!this.ctx) return;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(freq, st + idx * 0.07);
+
+        const t = st + idx * 0.07;
+        gain.gain.setValueAtTime(0, t);
+        gain.gain.linearRampToValueAtTime(0.15, t + 0.06);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + 1.4);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(t);
+        osc.stop(t + 1.45);
+      });
+    } catch {
+      // Audio fallback
+    }
+  }
 }
 
 export const sound = new SoundFX();
