@@ -20,10 +20,27 @@
 
 .font-serif-luxury {
   font-family: 'Playfair Display', Georgia, serif;
+  font-variant-numeric: lining-nums proportional-nums;
+  -moz-font-feature-settings: "lnum" 1;
+  -webkit-font-feature-settings: "lnum" 1;
+  font-feature-settings: "lnum" 1;
 }
 
-.font-sans-clean {
+/* Dedicated Numeral Class for Straight, Majestic Numbers (Khắc phục hoàn toàn số 0 bị bé hay số 3 bị tụt dòng) */
+.font-numeral,
+.font-number {
+  font-family: 'Cinzel', 'Be Vietnam Pro', system-ui, sans-serif;
+  font-variant-numeric: lining-nums tabular-nums;
+  -moz-font-feature-settings: "lnum" 1, "tnum" 1;
+  -webkit-font-feature-settings: "lnum" 1, "tnum" 1;
+  font-feature-settings: "lnum" 1, "tnum" 1;
+}
+
+.font-sans-clean,
+.font-sans-num {
   font-family: 'Be Vietnam Pro', system-ui, sans-serif;
+  font-variant-numeric: lining-nums tabular-nums;
+  font-feature-settings: "lnum" 1, "tnum" 1;
 }
 
 /* Luxury Gold & Navy Text Gradients */

@@ -48,10 +48,10 @@ export const AccessHologramModal: React.FC<AccessHologramModalProps> = ({ isOpen
                 {GRADUATION_CONFIG.graduate.fullName}
               </p>
               <p className="text-xs sm:text-sm text-slate-600 font-medium mt-0.5">
-                {GRADUATION_CONFIG.graduate.degree} • {GRADUATION_CONFIG.graduate.major}
+                {GRADUATION_CONFIG.graduate.degree} • Lớp <span className="font-numeral font-bold text-[#8A6D3B]">{GRADUATION_CONFIG.graduate.classCode}</span>
               </p>
               <p className="text-xs text-slate-500">
-                {GRADUATION_CONFIG.graduate.university}
+                {GRADUATION_CONFIG.graduate.faculty} • {GRADUATION_CONFIG.graduate.university}
               </p>
             </div>
           </div>
@@ -60,7 +60,9 @@ export const AccessHologramModal: React.FC<AccessHologramModalProps> = ({ isOpen
           <div className="grid grid-cols-2 gap-2 text-left bg-[#F7F4EC] p-3 rounded-xl border border-[#C5A059]/20 text-xs">
             <div className="flex items-center gap-2 text-slate-700">
               <Calendar className="w-4 h-4 text-[#C5A059] shrink-0" />
-              <span className="truncate font-medium">13h00 • 16/10/2026</span>
+              <span className="truncate font-sans font-medium">
+                <span className="font-numeral font-bold">13h00</span> • <span className="font-numeral font-bold">16/10/2026</span>
+              </span>
             </div>
             <div className="flex items-center gap-2 text-slate-700">
               <MapPin className="w-4 h-4 text-[#C5A059] shrink-0" />

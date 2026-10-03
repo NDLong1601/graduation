@@ -27,18 +27,19 @@ export const HeroSection: React.FC = () => {
               </p>
               <h1 className="text-3xl sm:text-5xl xl:text-6xl font-serif-luxury font-bold tracking-tight text-[#0F172A] leading-tight">
                 <span className="block text-slate-800">Lễ Trao Bằng</span>
-                <span className="gold-foil-text block mt-1">Tốt Nghiệp 2026</span>
+                <span className="gold-foil-text block mt-1">
+                  Tốt Nghiệp <span className="font-numeral inline-block font-bold tracking-tight">2026</span>
+                </span>
               </h1>
               <div className="pt-2">
                 <h2 className="text-2xl sm:text-3xl font-serif-luxury font-bold text-[#0F172A]">
                   {GRADUATION_CONFIG.graduate.fullName}
                 </h2>
                 <p className="text-sm sm:text-base text-slate-700 font-medium mt-1">
-                  {GRADUATION_CONFIG.graduate.degree} • {GRADUATION_CONFIG.graduate.major}
+                  {GRADUATION_CONFIG.graduate.degree} • Lớp <span className="font-numeral font-bold text-[#8A6D3B]">{GRADUATION_CONFIG.graduate.classCode}</span>
                 </p>
                 <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
-                  {GRADUATION_CONFIG.graduate.university}
-                  {GRADUATION_CONFIG.graduate.faculty ? ` (${GRADUATION_CONFIG.graduate.faculty})` : ''}
+                  {GRADUATION_CONFIG.graduate.faculty} • {GRADUATION_CONFIG.graduate.university}
                 </p>
               </div>
             </div>
@@ -46,19 +47,19 @@ export const HeroSection: React.FC = () => {
             {/* Quick Stats Grid */}
             <div className="grid grid-cols-3 gap-2.5 sm:gap-3 py-2 max-w-md mx-auto lg:mx-0">
               <div className="bg-white/95 p-3.5 rounded-2xl text-center border border-[#C5A059]/25 shadow-sm">
-                <div className="text-[#8A6D3B] font-serif-luxury font-bold text-base sm:text-lg">
+                <div className="text-[#8A6D3B] font-numeral font-bold text-base sm:text-lg">
+                  {GRADUATION_CONFIG.graduate.classCode}
+                </div>
+                <div className="text-[10px] text-slate-500 font-medium tracking-wide">LỚP SINH VIÊN</div>
+              </div>
+              <div className="bg-white/95 p-3.5 rounded-2xl text-center border border-[#C5A059]/25 shadow-sm">
+                <div className="text-[#8A6D3B] font-numeral font-bold text-base sm:text-lg">
                   K27
                 </div>
                 <div className="text-[10px] text-slate-500 font-medium tracking-wide">SINH VIÊN KHÓA</div>
               </div>
               <div className="bg-white/95 p-3.5 rounded-2xl text-center border border-[#C5A059]/25 shadow-sm">
-                <div className="text-[#8A6D3B] font-serif-luxury font-bold text-base sm:text-lg">
-                  Khoa CNTT
-                </div>
-                <div className="text-[10px] text-slate-500 font-medium tracking-wide">ĐƠN VỊ ĐÀO TẠO</div>
-              </div>
-              <div className="bg-white/95 p-3.5 rounded-2xl text-center border border-[#C5A059]/25 shadow-sm">
-                <div className="text-emerald-700 font-serif-luxury font-bold text-base sm:text-lg flex items-center justify-center gap-1">
+                <div className="text-emerald-700 font-sans font-bold text-sm sm:text-base flex items-center justify-center gap-1">
                   <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /> TÂN KỸ SƯ
                 </div>
                 <div className="text-[10px] text-slate-500 font-medium tracking-wide">DANH HIỆU</div>

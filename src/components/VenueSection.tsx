@@ -84,18 +84,33 @@ export const VenueSection: React.FC = () => {
 
             {/* Quick Contact Card */}
             {GRADUATION_CONFIG.contact.phone && (
-              <div className="luxury-card p-4 rounded-2xl flex items-center justify-between text-xs">
+              <div className="luxury-card p-4 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs">
                 <div>
-                  <span className="text-slate-500">Cần hỗ trợ chỉ đường?</span>
-                  <p className="font-bold text-slate-800">Hotline / Zalo: {GRADUATION_CONFIG.contact.phone}</p>
+                  <span className="text-slate-500">Cần hỗ trợ đón tiếp & chỉ đường?</span>
+                  <p className="font-sans font-bold text-slate-900 text-sm mt-0.5">
+                    Hotline / Zalo: <span className="font-numeral text-amber-800 tracking-wide">{GRADUATION_CONFIG.contact.phone}</span>
+                  </p>
                 </div>
-                <a
-                  href={`tel:${GRADUATION_CONFIG.contact.phone.replace(/\s+/g, '')}`}
-                  onClick={() => sound.playClick()}
-                  className="px-3.5 py-1.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 font-semibold hover:bg-amber-100 transition-colors"
-                >
-                  Gọi ngay
-                </a>
+                <div className="flex items-center gap-2">
+                  <a
+                    href={`tel:${GRADUATION_CONFIG.contact.phone.replace(/\s+/g, '')}`}
+                    onClick={() => sound.playClick()}
+                    className="px-3 py-1.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 font-semibold hover:bg-amber-100 transition-colors"
+                  >
+                    Gọi ngay
+                  </a>
+                  {GRADUATION_CONFIG.contact.zaloUrl && (
+                    <a
+                      href={GRADUATION_CONFIG.contact.zaloUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={() => sound.playClick()}
+                      className="px-3 py-1.5 rounded-xl bg-blue-50 border border-blue-200 text-blue-900 font-semibold hover:bg-blue-100 transition-colors"
+                    >
+                      Nhắn Zalo
+                    </a>
+                  )}
+                </div>
               </div>
             )}
           </div>

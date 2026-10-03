@@ -44,10 +44,10 @@ export const CyberNavbar: React.FC<CyberNavbarProps> = ({ onOpenInvite }) => {
           </div>
           <div className="flex flex-col text-left">
             <span className="font-serif-luxury font-bold text-sm sm:text-base text-[#0F172A] tracking-tight group-hover:text-[#8A6D3B] transition-colors">
-              LỄ TỐT NGHIỆP 2026
+              LỄ TỐT NGHIỆP <span className="font-numeral">2026</span>
             </span>
             <span className="text-[11px] text-[#8A6D3B] font-medium tracking-wide">
-              {GRADUATION_CONFIG.graduate.fullName}
+              {GRADUATION_CONFIG.graduate.fullName} • Lớp <span className="font-numeral font-bold">{GRADUATION_CONFIG.graduate.classCode}</span>
             </span>
           </div>
         </a>

@@ -6,11 +6,11 @@ import type { EventConfig, WishMessage } from './types/graduation';
 export const GRADUATION_CONFIG: EventConfig = {
   graduate: {
     fullName: "NGUYỄN ĐỨC LONG",
-    degree: "TÂN KỸ SƯ CÔNG NGHỆ THÔNG TIN",
-    major: "CÔNG NGHỆ THÔNG TIN",
+    degree: "TÂN KỸ SƯ KỸ THUẬT PHẦN MỀM",
+    major: "KỸ THUẬT PHẦN MỀM",
     university: "Trường Đại học Kinh doanh và Công nghệ Hà Nội (HUBT)",
     faculty: "Khoa Công nghệ Thông tin",
-    classCode: "Khóa 27 (K27)",
+    classCode: "PM27.07",
     studentId: "",
     // Nếu bạn có ảnh cá nhân, hãy đặt file vào thư mục public/ (ví dụ: /avatar.jpg)
     avatarUrl: "",
@@ -97,9 +97,9 @@ export const GRADUATION_CONFIG: EventConfig = {
   ],
 
   contact: {
-    phone: "0912 345 678",
+    phone: "0942 447 120",
     facebookUrl: "https://facebook.com",
-    zaloUrl: "https://zalo.me",
+    zaloUrl: "https://zalo.me/0942447120",
   },
 };
 

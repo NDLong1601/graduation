@@ -47,7 +47,7 @@ export const EventTimeline: React.FC = () => {
 
               {/* Time Tag on the left for tablet/desktop */}
               <div className="hidden sm:block absolute -left-32 top-2 w-24 text-right">
-                <span className="font-serif-luxury text-xs text-[#8A6D3B] font-bold bg-[#F7F4EC] px-2.5 py-1 rounded-lg border border-[#C5A059]/30 shadow-sm">
+                <span className="font-sans text-xs text-[#8A6D3B] font-bold bg-[#F7F4EC] px-2.5 py-1 rounded-lg border border-[#C5A059]/30 shadow-sm tracking-wide tabular-nums">
                   {item.time.split('-')[0].trim()}
                 </span>
               </div>
@@ -55,7 +55,7 @@ export const EventTimeline: React.FC = () => {
               {/* Timeline Card */}
               <div className="bg-white/95 p-5 sm:p-6 rounded-2xl border border-[#C5A059]/25 hover:border-[#C5A059]/60 shadow-sm hover:shadow-md transition-all duration-300 group-hover:translate-x-1">
                 {/* Mobile time display */}
-                <div className="sm:hidden inline-block font-serif-luxury text-xs text-[#8A6D3B] font-bold bg-[#F7F4EC] px-2.5 py-0.5 rounded border border-[#C5A059]/30 mb-2">
+                <div className="sm:hidden inline-block font-sans text-xs text-[#8A6D3B] font-bold bg-[#F7F4EC] px-2.5 py-0.5 rounded border border-[#C5A059]/30 mb-2 tracking-wide tabular-nums">
                   {item.time}
                 </div>
 
@@ -63,7 +63,7 @@ export const EventTimeline: React.FC = () => {
                   <h3 className="text-base sm:text-lg font-serif-luxury font-bold text-[#0F172A] group-hover:text-[#8A6D3B] transition-colors">
                     {item.title}
                   </h3>
-                  <span className="hidden sm:inline text-xs text-slate-500 font-medium">
+                  <span className="hidden sm:inline text-xs font-sans text-slate-500 font-medium tabular-nums">
                     {item.time}
                   </span>
                 </div>

@@ -17,14 +17,13 @@ export const CyberFooter: React.FC = () => {
           <div className="space-y-1">
             <div className="flex items-center justify-center md:justify-start gap-2 font-serif-luxury font-bold text-slate-900 text-lg">
               <span>🎓</span>
-              <span>LỄ TỐT NGHIỆP • 2026</span>
+              <span>LỄ TỐT NGHIỆP • <span className="font-numeral font-bold">2026</span></span>
             </div>
             <p className="text-xs text-slate-600">
               Thiệp mời kỷ niệm tốt nghiệp của <strong className="text-amber-800 font-semibold">{GRADUATION_CONFIG.graduate.fullName}</strong>
             </p>
             <p className="text-[11px] text-slate-500 font-sans">
-              {GRADUATION_CONFIG.graduate.university}
-              {GRADUATION_CONFIG.graduate.faculty ? ` • ${GRADUATION_CONFIG.graduate.faculty}` : ''}
+              Lớp <strong className="font-numeral text-slate-700">{GRADUATION_CONFIG.graduate.classCode}</strong> • {GRADUATION_CONFIG.graduate.faculty} • {GRADUATION_CONFIG.graduate.university}
             </p>
           </div>
 

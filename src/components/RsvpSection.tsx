@@ -73,7 +73,7 @@ export const RsvpSection: React.FC = () => {
               Xác Nhận Tham Dự
             </h2>
             <p className="text-xs sm:text-sm text-slate-600">
-              Vui lòng gửi xác nhận trước ngày <strong className="text-amber-700 font-semibold">12/10/2026</strong> để mình chuẩn bị tiếp đón chu đáo nhất nhé!
+              Vui lòng gửi xác nhận trước ngày <strong className="text-amber-700 font-semibold font-numeral">12/10/2026</strong> để mình chuẩn bị tiếp đón chu đáo nhất nhé!
             </p>
           </div>
 
@@ -102,7 +102,7 @@ export const RsvpSection: React.FC = () => {
               <div className="p-5 rounded-2xl bg-white border border-amber-200/90 text-left font-sans text-xs space-y-2 max-w-sm mx-auto shadow-sm">
                 <div className="flex justify-between items-center pb-2 border-b border-slate-100">
                   <span className="text-slate-400 uppercase tracking-wider text-[10px]">THẺ THAM DỰ</span>
-                  <span className="text-amber-700 font-bold font-serif-luxury text-sm">#TK-{Math.floor(1000 + Math.random() * 9000)}</span>
+                  <span className="text-amber-700 font-bold font-numeral text-sm">#TK-{Math.floor(1000 + Math.random() * 9000)}</span>
                 </div>
                 <div className="flex justify-between text-slate-600">
                   <span>Khách mời:</span>

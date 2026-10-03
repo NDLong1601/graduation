@@ -118,7 +118,7 @@ export const CountdownSection: React.FC = () => {
                 key={idx}
                 className="bg-[#FCFBF8] rounded-2xl p-4 sm:p-6 border border-[#C5A059]/30 shadow-sm"
               >
-                <div className="text-3xl sm:text-5xl font-serif-luxury font-bold text-[#0F172A] tracking-tight">
+                <div className="text-3xl sm:text-5xl font-numeral font-bold text-[#0F172A] tracking-tight tabular-nums">
                   {String(unit.value).padStart(2, '0')}
                 </div>
                 <div className="text-[10px] sm:text-xs font-semibold text-[#8A6D3B] mt-1 uppercase tracking-widest">
