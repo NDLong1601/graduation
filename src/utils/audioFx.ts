@@ -714,6 +714,135 @@ class SoundFX {
       // Audio fallback
     }
   }
+
+  // Firework launch whistle & whoosh
+  public playFireworkLaunch() {
+    if (this.isMuted) return;
+    try {
+      this.initContext();
+      if (!this.ctx) return;
+
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      osc.type = 'sawtooth';
+      const st = this.ctx.currentTime;
+      osc.frequency.setValueAtTime(350, st);
+      osc.frequency.exponentialRampToValueAtTime(1400, st + 0.5);
+
+      gain.gain.setValueAtTime(0.04, st);
+      gain.gain.exponentialRampToValueAtTime(0.001, st + 0.55);
+
+      const filter = this.ctx.createBiquadFilter();
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(1500, st);
+
+      osc.connect(filter);
+      filter.connect(gain);
+      gain.connect(this.ctx.destination);
+
+      osc.start(st);
+      osc.stop(st + 0.55);
+    } catch {
+      // Audio fallback
+    }
+  }
+
+  // Firework explosion boom & crackles
+  public playFireworkBurst() {
+    if (this.isMuted) return;
+    try {
+      this.initContext();
+      if (!this.ctx) return;
+
+      const st = this.ctx.currentTime;
+
+      // 1. Bass thud
+      const sub = this.ctx.createOscillator();
+      const subGain = this.ctx.createGain();
+      sub.type = 'sine';
+      sub.frequency.setValueAtTime(130, st);
+      sub.frequency.exponentialRampToValueAtTime(30, st + 0.7);
+
+      subGain.gain.setValueAtTime(0.28, st);
+      subGain.gain.exponentialRampToValueAtTime(0.001, st + 0.7);
+
+      sub.connect(subGain);
+      subGain.connect(this.ctx.destination);
+      sub.start(st);
+      sub.stop(st + 0.72);
+
+      // 2. Sparkle crackles
+      const bufferSize = Math.floor(this.ctx.sampleRate * 0.4);
+      const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / bufferSize, 2);
+      }
+      const noise = this.ctx.createBufferSource();
+      noise.buffer = buffer;
+
+      const filter = this.ctx.createBiquadFilter();
+      filter.type = 'highpass';
+      filter.frequency.setValueAtTime(1200, st);
+
+      const noiseGain = this.ctx.createGain();
+      noiseGain.gain.setValueAtTime(0.08, st);
+      noiseGain.gain.exponentialRampToValueAtTime(0.001, st + 0.4);
+
+      noise.connect(filter);
+      filter.connect(noiseGain);
+      noiseGain.connect(this.ctx.destination);
+      noise.start(st);
+    } catch {
+      // Audio fallback
+    }
+  }
+
+  // Grand finale fanfare & thunderous fireworks barrage
+  public playGrandCelebrationBurst() {
+    if (this.isMuted) return;
+    try {
+      this.initContext();
+      if (!this.ctx) return;
+
+      const st = this.ctx.currentTime;
+
+      // Triad chords: C5, E5, G5, C6 (Triumphant brass chime)
+      const fanfare = [523.25, 659.25, 783.99, 1046.5];
+      fanfare.forEach((freq, idx) => {
+        if (!this.ctx) return;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(freq, st + idx * 0.08);
+
+        const t = st + idx * 0.08;
+        gain.gain.setValueAtTime(0, t);
+        gain.gain.linearRampToValueAtTime(0.14, t + 0.05);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + 1.2);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(t);
+        osc.stop(t + 1.25);
+      });
+
+      // Rolling thunder
+      const sub = this.ctx.createOscillator();
+      const subGain = this.ctx.createGain();
+      sub.type = 'sine';
+      sub.frequency.setValueAtTime(95, st);
+      sub.frequency.exponentialRampToValueAtTime(25, st + 1.5);
+      subGain.gain.setValueAtTime(0.35, st);
+      subGain.gain.exponentialRampToValueAtTime(0.001, st + 1.5);
+      sub.connect(subGain);
+      subGain.connect(this.ctx.destination);
+      sub.start(st);
+      sub.stop(st + 1.55);
+    } catch {
+      // Audio fallback
+    }
+  }
 }
 
 export const sound = new SoundFX();
