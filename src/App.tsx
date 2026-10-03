@@ -12,6 +12,8 @@ import { CyberFooter } from './components/CyberFooter';
 import { ThreeCyberBackground } from './components/ThreeCyberBackground';
 import { GoldenStardustCursor } from './components/GoldenStardustCursor';
 
+import { ScrollReveal } from './components/ScrollReveal';
+
 export const App: React.FC = () => {
   // 3D Intro state (Feature #4: Cyber Matrix Terminal into 24K Gold Alchemy Shockwave)
   const [showIntro, setShowIntro] = useState(true);
@@ -66,14 +68,31 @@ export const App: React.FC = () => {
 
       <main className="relative z-10 space-y-12 sm:space-y-20">
         <HeroSection />
-        <CountdownSection />
-        <EventTimeline />
-        <VenueSection />
-        <RsvpSection />
-        <GuestbookSection />
+
+        <ScrollReveal animation="fade-up" delay={80}>
+          <CountdownSection />
+        </ScrollReveal>
+
+        <ScrollReveal animation="fade-up" delay={80}>
+          <EventTimeline />
+        </ScrollReveal>
+
+        <ScrollReveal animation="fade-up" delay={80}>
+          <VenueSection />
+        </ScrollReveal>
+
+        <ScrollReveal animation="fade-up" delay={80}>
+          <RsvpSection />
+        </ScrollReveal>
+
+        <ScrollReveal animation="fade-up" delay={80}>
+          <GuestbookSection />
+        </ScrollReveal>
       </main>
 
-      <CyberFooter />
+      <ScrollReveal animation="fade-up">
+        <CyberFooter />
+      </ScrollReveal>
     </div>
   );
 };

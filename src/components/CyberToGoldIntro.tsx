@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { GRADUATION_CONFIG } from '../config';
 import { sound } from '../utils/audioFx';
-import { Sparkles, ArrowRight, Volume2, VolumeX, FastForward, Terminal, Cpu } from 'lucide-react';
+import { Sparkles, ArrowRight, Volume2, VolumeX, FastForward, Terminal, Cpu, RotateCcw, Compass } from 'lucide-react';
 
 interface CyberToGoldIntroProps {
   onEnter: () => void;
@@ -41,6 +41,7 @@ export const CyberToGoldIntro: React.FC<CyberToGoldIntroProps> = ({ onEnter }) =
   const animFrameRef = useRef<number | null>(null);
   const stageRef = useRef<AlchemistStage>('cyber');
   const alchemyProgressRef = useRef(0);
+  const resetViewRef = useRef<(() => void) | null>(null);
 
   useEffect(() => {
     stageRef.current = stage;
@@ -94,7 +95,7 @@ export const CyberToGoldIntro: React.FC<CyberToGoldIntroProps> = ({ onEnter }) =
 
     // 1. Three.js Scene Setup
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x040814, 0.018);
+    scene.fog = new THREE.FogExp2(0x040814, 0.016);
 
     const width = window.innerWidth;
     const height = window.innerHeight;
@@ -107,20 +108,88 @@ export const CyberToGoldIntro: React.FC<CyberToGoldIntroProps> = ({ onEnter }) =
     renderer.setClearColor(0x040814, 1);
     container.appendChild(renderer.domElement);
 
-    // Mouse Tracking & Raycasting
-    const mouse = { x: 0, y: 0, targetX: 0, targetY: 0 };
+    // 2. 360° Spherical Orbit Camera Control
+    let radius = 20;
+    let targetRadius = 20;
+    let theta = 0; // Azimuthal angle: yaw (0 to 2*PI, full 360° rotation)
+    let targetTheta = 0;
+    let phi = Math.PI / 2.15; // Polar angle: pitch
+    let targetPhi = Math.PI / 2.15;
+
+    let isDragging = false;
+    let startPointer = { x: 0, y: 0 };
+    let hasMovedFar = false;
+    let idleSeconds = 0;
+
     const mouseNorm = new THREE.Vector2(-999, -999);
     const raycaster = new THREE.Raycaster();
 
-    const handleMouseMove = (e: MouseEvent) => {
-      mouse.targetX = (e.clientX / window.innerWidth) * 2 - 1;
-      mouse.targetY = -(e.clientY / window.innerHeight) * 2 - 1;
+    resetViewRef.current = () => {
+      targetTheta = 0;
+      targetPhi = Math.PI / 2.15;
+      targetRadius = 20;
+      idleSeconds = 0;
+    };
+
+    // Pointer Events for 360° Drag & Click
+    const handlePointerDown = (e: PointerEvent) => {
+      if (e.button !== 0 && e.pointerType === 'mouse') return;
+      isDragging = true;
+      startPointer = { x: e.clientX, y: e.clientY };
+      hasMovedFar = false;
+    };
+
+    const handlePointerMove = (e: PointerEvent) => {
       mouseNorm.x = (e.clientX / window.innerWidth) * 2 - 1;
       mouseNorm.y = -(e.clientY / window.innerHeight) * 2 + 1;
-    };
-    window.addEventListener('mousemove', handleMouseMove, { passive: true });
 
-    // 2. Lighting Setup
+      if (isDragging) {
+        const dx = e.clientX - startPointer.x;
+        const dy = e.clientY - startPointer.y;
+        if (Math.abs(dx) > 3 || Math.abs(dy) > 3) {
+          hasMovedFar = true;
+        }
+        startPointer = { x: e.clientX, y: e.clientY };
+
+        targetTheta -= dx * 0.007; // 360° yaw
+        targetPhi -= dy * 0.0055; // pitch
+        targetPhi = Math.max(0.18, Math.min(Math.PI - 0.18, targetPhi));
+        idleSeconds = 0;
+      }
+    };
+
+    const handlePointerUp = () => {
+      if (!hasMovedFar) {
+        // Distinct Click: Raycast click on cubes
+        raycaster.setFromCamera(mouseNorm, camera);
+        const intersects = raycaster.intersectObjects(interactiveMeshList, true);
+        if (intersects.length > 0) {
+          const hitOuter = intersects[0].object;
+          const target = interactiveCubes.find((c) => c.outerBox === hitOuter || c.mesh === hitOuter.parent);
+          if (target) {
+            sound.playClick();
+            target.spinBonus = 20.0;
+            target.scaleBonus = 0.55;
+            spawnSparks(target.mesh.position);
+          }
+        }
+      }
+      isDragging = false;
+    };
+
+    const handleWheel = (e: WheelEvent) => {
+      e.preventDefault();
+      targetRadius += e.deltaY * 0.015;
+      targetRadius = Math.max(11, Math.min(32, targetRadius));
+      idleSeconds = 0;
+    };
+
+    container.addEventListener('pointerdown', handlePointerDown);
+    window.addEventListener('pointermove', handlePointerMove, { passive: true });
+    window.addEventListener('pointerup', handlePointerUp);
+    container.addEventListener('wheel', handleWheel, { passive: false });
+
+    // 3. Lighting Setup
     const ambientLight = new THREE.AmbientLight(0x0284c7, 1.4);
     scene.add(ambientLight);
 
@@ -132,12 +201,12 @@ export const CyberToGoldIntro: React.FC<CyberToGoldIntroProps> = ({ onEnter }) =
     rimLight.position.set(5, 10, 8);
     scene.add(rimLight);
 
-    // 3. Cyber Data Grid Floor
+    // 4. Cyber Data Grid Floor
     const gridHelper = new THREE.GridHelper(60, 40, 0x00f0ff, 0x0369a1);
     gridHelper.position.y = -6;
     scene.add(gridHelper);
 
-    // 4. Interactive Sleek 3D Quantum Data Prisms (Khối dữ liệu pha lê lõi vàng)
+    // 5. Interactive Sleek 3D Quantum Data Prisms (Khối dữ liệu pha lê lõi vàng)
     const cubeCount = 26;
     const interactiveCubes: InteractiveCube[] = [];
     const interactiveMeshList: THREE.Object3D[] = [];
@@ -220,7 +289,7 @@ export const CyberToGoldIntro: React.FC<CyberToGoldIntroProps> = ({ onEnter }) =
       });
     }
 
-    // 5. Digital Matrix Particle Dust
+    // 6. Digital Matrix Particle Dust
     const particleCount = 1200;
     const particleGeo = new THREE.BufferGeometry();
     const particlePos = new Float32Array(particleCount * 3);
@@ -249,7 +318,7 @@ export const CyberToGoldIntro: React.FC<CyberToGoldIntroProps> = ({ onEnter }) =
     const matrixRain = new THREE.Points(particleGeo, particleMat);
     scene.add(matrixRain);
 
-    // 6. Expanding Golden Shockwave Ring
+    // 7. Expanding Golden Shockwave Ring
     const waveGeo = new THREE.RingGeometry(0.5, 1.8, 64);
     const waveMat = new THREE.MeshBasicMaterial({
       color: 0xfde047,
@@ -261,14 +330,13 @@ export const CyberToGoldIntro: React.FC<CyberToGoldIntroProps> = ({ onEnter }) =
     const waveMesh = new THREE.Mesh(waveGeo, waveMat);
     scene.add(waveMesh);
 
-    // 7. Center Transmuted Golden Cap 3D (Revealed in Gold stage)
+    // 8. Center Transmuted Golden Cap 3D
     const capGroup = new THREE.Group();
     const capPlate = new THREE.Mesh(new THREE.BoxGeometry(4.2, 0.14, 4.2), goldBoxMat);
     capPlate.rotation.y = Math.PI / 4;
     capPlate.position.y = 1.1;
     capGroup.add(capPlate);
 
-    // Gold trim on plate
     const capEdges = new THREE.LineSegments(
       new THREE.EdgesGeometry(new THREE.BoxGeometry(4.2, 0.14, 4.2)),
       new THREE.LineBasicMaterial({ color: 0xfff08a })
@@ -286,7 +354,7 @@ export const CyberToGoldIntro: React.FC<CyberToGoldIntroProps> = ({ onEnter }) =
     capGroup.scale.set(0, 0, 0);
     scene.add(capGroup);
 
-    // 8. Interactive Golden Click Sparks System
+    // 9. Interactive Golden Click Sparks System
     const sparks: Spark[] = [];
     const maxSparks = 180;
     const sparkGeo = new THREE.BufferGeometry();
@@ -325,26 +393,7 @@ export const CyberToGoldIntro: React.FC<CyberToGoldIntroProps> = ({ onEnter }) =
       }
     };
 
-    // Click on Cube Event
-    const handleCanvasClick = () => {
-      raycaster.setFromCamera(mouseNorm, camera);
-      const intersects = raycaster.intersectObjects(interactiveMeshList, true);
-      if (intersects.length > 0) {
-        const hitOuter = intersects[0].object;
-        const target = interactiveCubes.find((c) => c.outerBox === hitOuter || c.mesh === hitOuter.parent);
-        if (target) {
-          sound.playClick();
-          // Boost spin & scale impulse
-          target.spinBonus = 18.0;
-          target.scaleBonus = 0.5;
-          // Spawn sparks at cube location
-          spawnSparks(target.mesh.position);
-        }
-      }
-    };
-    container.addEventListener('click', handleCanvasClick);
-
-    // 9. Animation Render Loop
+    // 10. Animation Render Loop
     let clock = new THREE.Clock();
 
     const animate = () => {
@@ -352,11 +401,21 @@ export const CyberToGoldIntro: React.FC<CyberToGoldIntroProps> = ({ onEnter }) =
       const delta = clock.getDelta();
       const elapsed = clock.getElapsedTime();
 
-      // Camera parallax
-      mouse.x += (mouse.targetX - mouse.x) * 0.05;
-      mouse.y += (mouse.targetY - mouse.y) * 0.05;
-      camera.position.x = mouse.x * 2.0;
-      camera.position.y = mouse.y * 1.4;
+      // Idle Timer & 360° Cinematic Auto-Orbit
+      idleSeconds += delta;
+      if (idleSeconds > 1.8 && !isDragging) {
+        targetTheta += delta * 0.12;
+      }
+
+      // Smooth Spherical Lerp
+      theta += (targetTheta - theta) * 0.08;
+      phi += (targetPhi - phi) * 0.08;
+      radius += (targetRadius - radius) * 0.08;
+
+      // Convert Spherical Coordinates to Camera 3D Position
+      camera.position.x = radius * Math.sin(phi) * Math.sin(theta);
+      camera.position.y = radius * Math.cos(phi);
+      camera.position.z = radius * Math.sin(phi) * Math.cos(theta);
       camera.lookAt(0, 0, 0);
 
       // Raycast for hover state & proximity physics
@@ -364,14 +423,13 @@ export const CyberToGoldIntro: React.FC<CyberToGoldIntroProps> = ({ onEnter }) =
       const rayIntersects = raycaster.intersectObjects(interactiveMeshList, true);
       const hoveredMesh = rayIntersects.length > 0 ? rayIntersects[0].object : null;
 
-      // Update cursor pointer
+      // Update cursor style
       if (container) {
-        container.style.cursor = hoveredMesh ? 'pointer' : 'default';
+        container.style.cursor = isDragging ? 'grabbing' : hoveredMesh ? 'pointer' : 'grab';
       }
 
       // Update Interactive Prisms
       interactiveCubes.forEach((item, idx) => {
-        // Base bobbing
         const targetY = item.basePos.y + Math.sin(elapsed * 1.2 + idx * 0.7) * 0.4;
         const targetX = item.basePos.x + Math.cos(elapsed * 0.8 + idx * 0.5) * 0.25;
 
@@ -384,16 +442,13 @@ export const CyberToGoldIntro: React.FC<CyberToGoldIntroProps> = ({ onEnter }) =
         const isHovered = hoveredMesh && (hoveredMesh === item.outerBox || hoveredMesh.parent === item.mesh);
 
         if (distToRay < 3.8 || isHovered) {
-          // Repulsion vector pushing away from cursor
           const pushDir = cubePos.clone().sub(rayPoint).normalize();
           const pushForce = Math.max((3.8 - distToRay) * 0.45, 0);
           item.velocity.add(pushDir.multiplyScalar(pushForce));
 
-          // Spin reaction
           item.rotSpeed.x += (Math.random() - 0.5) * 0.02;
           item.rotSpeed.y += (Math.random() - 0.5) * 0.02;
 
-          // Inner core pulse
           item.innerCore.scale.set(1.4, 1.4, 1.4);
         } else {
           item.innerCore.scale.set(1.0, 1.0, 1.0);
@@ -447,7 +502,6 @@ export const CyberToGoldIntro: React.FC<CyberToGoldIntroProps> = ({ onEnter }) =
         sColArr[i * 3 + 1] = s.color.g * alpha;
         sColArr[i * 3 + 2] = s.color.b * alpha;
       }
-      // Zero out unused spark slots
       for (let i = sparks.length; i < maxSparks; i++) {
         sPosArr[i * 3] = 0;
         sPosArr[i * 3 + 1] = 0;
@@ -519,8 +573,10 @@ export const CyberToGoldIntro: React.FC<CyberToGoldIntroProps> = ({ onEnter }) =
     return () => {
       if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
       window.removeEventListener('resize', handleResize);
-      window.removeEventListener('mousemove', handleMouseMove);
-      container.removeEventListener('click', handleCanvasClick);
+      container.removeEventListener('pointerdown', handlePointerDown);
+      window.removeEventListener('pointermove', handlePointerMove);
+      window.removeEventListener('pointerup', handlePointerUp);
+      container.removeEventListener('wheel', handleWheel);
       if (container.contains(renderer.domElement)) {
         container.removeChild(renderer.domElement);
       }
@@ -549,27 +605,47 @@ export const CyberToGoldIntro: React.FC<CyberToGoldIntroProps> = ({ onEnter }) =
     setIsMuted(muted);
   };
 
+  const handleResetView = () => {
+    sound.playClick();
+    resetViewRef.current?.();
+  };
+
   return (
-    <div className="fixed inset-0 z-50 overflow-hidden bg-[#040814] text-white select-none">
-      {/* 3D WebGL Canvas */}
-      <div ref={containerRef} className="absolute inset-0 z-0" />
+    <div className="fixed inset-0 z-50 overflow-hidden bg-[#040814] text-white select-none touch-none">
+      {/* 3D WebGL Canvas (Supports 360 drag, touch orbit & click) */}
+      <div
+        ref={containerRef}
+        className="absolute inset-0 z-0 select-none cursor-grab active:cursor-grabbing"
+        title="Giữ chuột & kéo để xoay 360° • Cuộn để phóng to"
+      />
 
       {/* Top Controls Overlay */}
       <div className="absolute top-4 sm:top-6 inset-x-4 sm:inset-x-8 z-30 flex items-center justify-between pointer-events-auto">
-        {/* Left: Audio Toggle */}
-        <button
-          onClick={toggleSound}
-          className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/70 hover:bg-slate-800/80 border border-cyan-500/40 backdrop-blur-md text-xs text-cyan-200 transition-all hover:scale-105 shadow-lg"
-          title="Bật/Tắt âm thanh"
-        >
-          {isMuted ? <VolumeX className="w-3.5 h-3.5 text-slate-400" /> : <Volume2 className="w-3.5 h-3.5 text-cyan-400 animate-pulse" />}
-          <span className="font-sans font-medium">{isMuted ? 'Bật Âm Thanh' : 'Âm Thanh Bật'}</span>
-        </button>
+        {/* Left: Audio Toggle & Reset View */}
+        <div className="flex items-center gap-2">
+          <button
+            onClick={toggleSound}
+            className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/75 hover:bg-slate-800/80 border border-cyan-500/40 backdrop-blur-md text-xs text-cyan-200 transition-all hover:scale-105 shadow-lg"
+            title="Bật/Tắt âm thanh"
+          >
+            {isMuted ? <VolumeX className="w-3.5 h-3.5 text-slate-400" /> : <Volume2 className="w-3.5 h-3.5 text-cyan-400 animate-pulse" />}
+            <span className="font-sans font-medium">{isMuted ? 'Bật Âm Thanh' : 'Âm Thanh Bật'}</span>
+          </button>
+
+          <button
+            onClick={handleResetView}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-900/75 hover:bg-slate-800/80 border border-cyan-500/40 backdrop-blur-md text-xs text-cyan-200 transition-all hover:scale-105 shadow-lg"
+            title="Đặt lại góc nhìn 360°"
+          >
+            <RotateCcw className="w-3.5 h-3.5 text-cyan-400" />
+            <span className="hidden sm:inline font-sans">Góc 360°</span>
+          </button>
+        </div>
 
         {/* Right: Skip Intro Button */}
         <button
           onClick={handleSkip}
-          className="group flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-slate-900/70 hover:bg-slate-800/80 border border-[#D4AF37]/50 backdrop-blur-md text-xs text-[#F3E5AB] transition-all hover:scale-105 shadow-lg"
+          className="group flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-slate-900/75 hover:bg-slate-800/80 border border-[#D4AF37]/50 backdrop-blur-md text-xs text-[#F3E5AB] transition-all hover:scale-105 shadow-lg"
         >
           <span>Bỏ qua Intro</span>
           <FastForward className="w-3.5 h-3.5 text-[#D4AF37] group-hover:translate-x-0.5 transition-transform" />
@@ -619,8 +695,14 @@ export const CyberToGoldIntro: React.FC<CyberToGoldIntroProps> = ({ onEnter }) =
 
       {/* CENTER PROCLAMATION: Transmuted Imperial Gold (Giai đoạn Vàng Hoàng Gia) */}
       {(stage === 'transmuting' || stage === 'gold') && (
-        <div className="absolute inset-x-4 bottom-10 sm:bottom-16 z-20 flex flex-col items-center justify-center text-center pointer-events-auto animate-scaleUp">
-          {/* Titles & Graduate Honor (Removed pill badge per user request) */}
+        <div className="absolute inset-x-4 bottom-8 sm:bottom-12 z-20 flex flex-col items-center justify-center text-center pointer-events-auto animate-scaleUp">
+          {/* Interaction Instruction Badge */}
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-slate-900/80 border border-amber-500/40 backdrop-blur-md text-[11px] text-amber-200/90 shadow-lg mb-2">
+            <Compass className="w-3 h-3 text-amber-400 animate-spin" />
+            <span>Kéo chuột để xoay 360° • Cuộn để phóng to • Chạm khối để tương tác</span>
+          </div>
+
+          {/* Titles & Graduate Honor */}
           <div className="space-y-1 max-w-xl mx-auto drop-shadow-2xl">
             <span className="text-xs font-sans font-bold tracking-[0.3em] text-[#D4AF37] uppercase">
               CHÚC MỪNG TÂN KỸ SƯ KỸ THUẬT PHẦN MỀM
@@ -638,7 +720,7 @@ export const CyberToGoldIntro: React.FC<CyberToGoldIntroProps> = ({ onEnter }) =
           </div>
 
           {/* Enter Button */}
-          <div className="pt-6">
+          <div className="pt-5">
             <button
               onClick={handleEnterCeremony}
               className="group relative inline-flex items-center gap-3 px-8 sm:px-12 py-3.5 sm:py-4 rounded-2xl bg-gradient-to-r from-[#C5A059] via-[#F3E5AB] to-[#D4AF37] text-slate-950 font-bold text-sm sm:text-base tracking-widest uppercase shadow-2xl shadow-amber-500/50 hover:scale-105 active:scale-95 transition-all cursor-pointer border border-white/70"
@@ -648,10 +730,6 @@ export const CyberToGoldIntro: React.FC<CyberToGoldIntroProps> = ({ onEnter }) =
               <ArrowRight className="w-4 h-4 text-slate-900 group-hover:translate-x-1 transition-transform" />
             </button>
           </div>
-
-          <p className="text-[11px] text-amber-200/60 italic pt-2.5">
-            💡 Chạm vào các khối dữ liệu hoàng kim 3D xung quanh để tương tác hoặc bấm nút để mở cổng
-          </p>
         </div>
       )}
     </div>

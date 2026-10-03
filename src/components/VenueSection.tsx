@@ -3,6 +3,7 @@ import { GRADUATION_CONFIG } from '../config';
 import { sound } from '../utils/audioFx';
 import { LuxuryTiltCard } from './LuxuryTiltCard';
 import { MapPin, Navigation, Car, Compass, Info } from 'lucide-react';
+import { ScrollReveal } from './ScrollReveal';
 
 export const VenueSection: React.FC = () => {
   return (
@@ -25,7 +26,8 @@ export const VenueSection: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
           {/* Left Info Panel */}
           <div className="lg:col-span-5 space-y-4 flex flex-col justify-between">
-            <LuxuryTiltCard className="luxury-card p-6 sm:p-7 rounded-3xl space-y-5 shadow-md">
+            <ScrollReveal animation="slide-left" delay={50}>
+              <LuxuryTiltCard className="luxury-card p-6 sm:p-7 rounded-3xl space-y-5 shadow-md">
               <div>
                 <div className="text-xs font-sans text-amber-700 uppercase tracking-widest font-semibold mb-1">
                   ĐỊA ĐIỂM CHÍNH
@@ -114,23 +116,28 @@ export const VenueSection: React.FC = () => {
                 </div>
               </div>
             )}
+            </ScrollReveal>
           </div>
 
           {/* Right Map Embed */}
-          <div className="lg:col-span-7 luxury-card rounded-3xl overflow-hidden h-[380px] lg:h-auto min-h-[380px] relative shadow-md">
-            <iframe
-              src={GRADUATION_CONFIG.event.googleMapsEmbedUrl}
-              className="w-full h-full border-0 absolute inset-0"
-              allowFullScreen={false}
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              title="Graduation Venue Google Map"
-            />
-            {/* Map corner badge */}
-            <div className="absolute top-3 left-3 bg-white/95 backdrop-blur-md px-3.5 py-1.5 rounded-xl border border-amber-200/80 text-xs font-medium text-slate-800 pointer-events-none shadow-sm flex items-center gap-1.5">
-              <MapPin className="w-3.5 h-3.5 text-amber-600" />
-              <span>{GRADUATION_CONFIG.event.hall}</span>
-            </div>
+          <div className="lg:col-span-7 h-[380px] lg:h-auto min-h-[380px]">
+            <ScrollReveal animation="slide-right" delay={120} className="h-full">
+              <div className="luxury-card rounded-3xl overflow-hidden h-full min-h-[380px] relative shadow-md">
+                <iframe
+                  src={GRADUATION_CONFIG.event.googleMapsEmbedUrl}
+                  className="w-full h-full border-0 absolute inset-0"
+                  allowFullScreen={false}
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="Graduation Venue Google Map"
+                />
+                {/* Map corner badge */}
+                <div className="absolute top-3 left-3 bg-white/95 backdrop-blur-md px-3.5 py-1.5 rounded-xl border border-amber-200/80 text-xs font-medium text-slate-800 pointer-events-none shadow-sm flex items-center gap-1.5">
+                  <MapPin className="w-3.5 h-3.5 text-amber-600" />
+                  <span>{GRADUATION_CONFIG.event.hall}</span>
+                </div>
+              </div>
+            </ScrollReveal>
           </div>
         </div>
       </div>

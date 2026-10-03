@@ -3,6 +3,7 @@ import { GRADUATION_CONFIG } from '../config';
 import { sound } from '../utils/audioFx';
 import { LuxuryTiltCard } from './LuxuryTiltCard';
 import { CalendarPlus, Download, Clock } from 'lucide-react';
+import { ScrollReveal } from './ScrollReveal';
 
 interface TimeLeft {
   days: number;
@@ -115,17 +116,16 @@ export const CountdownSection: React.FC = () => {
           {/* Countdown Clock HUD */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-6 max-w-2xl mx-auto mb-8 relative z-10">
             {timerUnits.map((unit, idx) => (
-              <div
-                key={idx}
-                className="bg-[#FCFBF8] rounded-2xl p-4 sm:p-6 border border-[#C5A059]/30 shadow-sm"
-              >
-                <div className="text-3xl sm:text-5xl font-numeral font-bold text-[#0F172A] tracking-tight tabular-nums">
-                  {String(unit.value).padStart(2, '0')}
+              <ScrollReveal key={idx} animation="scale" delay={idx * 80}>
+                <div className="bg-[#FCFBF8] rounded-2xl p-4 sm:p-6 border border-[#C5A059]/30 shadow-sm">
+                  <div className="text-3xl sm:text-5xl font-numeral font-bold text-[#0F172A] tracking-tight tabular-nums">
+                    {String(unit.value).padStart(2, '0')}
+                  </div>
+                  <div className="text-[10px] sm:text-xs font-semibold text-[#8A6D3B] mt-1 uppercase tracking-widest">
+                    {unit.label}
+                  </div>
                 </div>
-                <div className="text-[10px] sm:text-xs font-semibold text-[#8A6D3B] mt-1 uppercase tracking-widest">
-                  {unit.label}
-                </div>
-              </div>
+              </ScrollReveal>
             ))}
           </div>
 
