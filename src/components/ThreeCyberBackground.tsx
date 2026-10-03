@@ -42,12 +42,12 @@ export const ThreeCyberBackground: React.FC = () => {
     const particleGeometry = new THREE.BufferGeometry();
     particleGeometry.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
 
-    // Cyan glowing particles
+    // Rose gold glowing particles
     const particleMaterial = new THREE.PointsMaterial({
-      color: 0x00f5d4,
-      size: 0.16,
+      color: 0xfb7185,
+      size: 0.18,
       transparent: true,
-      opacity: 0.8,
+      opacity: 0.85,
       blending: THREE.AdditiveBlending,
     });
 
@@ -66,14 +66,14 @@ export const ThreeCyberBackground: React.FC = () => {
     const lineMaterial = new THREE.LineBasicMaterial({
       vertexColors: true,
       transparent: true,
-      opacity: 0.28,
+      opacity: 0.32,
       blending: THREE.AdditiveBlending,
     });
 
     const lineSegments = new THREE.LineSegments(lineGeometry, lineMaterial);
     scene.add(lineSegments);
 
-    // 4. Distant Cyber Cosmic Dust (Deep Stars)
+    // 4. Distant Velvet Nebula Stars (Champagne Gold & Soft Rose)
     const starCount = 300;
     const starPositions = new Float32Array(starCount * 3);
     for (let i = 0; i < starCount; i++) {
@@ -84,10 +84,10 @@ export const ThreeCyberBackground: React.FC = () => {
     const starGeometry = new THREE.BufferGeometry();
     starGeometry.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
     const starMaterial = new THREE.PointsMaterial({
-      color: 0xa855f7,
-      size: 0.1,
+      color: 0xfcd34d,
+      size: 0.11,
       transparent: true,
-      opacity: 0.5,
+      opacity: 0.55,
     });
     const stars = new THREE.Points(starGeometry, starMaterial);
     scene.add(stars);
@@ -159,15 +159,15 @@ export const ThreeCyberBackground: React.FC = () => {
             linePositions[lineVertexIndex++] = positions[j * 3 + 1];
             linePositions[lineVertexIndex++] = positions[j * 3 + 2];
 
-            // Color gradient (Cyan to Purple) based on distance
+            // Warm Rose Gold to Amber Gold line gradient
             const alpha = 1 - dist / maxDistance;
-            lineColors[colorIndex++] = 0.02 * alpha; // R
-            lineColors[colorIndex++] = 0.96 * alpha; // G
-            lineColors[colorIndex++] = 0.83 * alpha; // B
+            lineColors[colorIndex++] = 0.98 * alpha; // R (#fb7185)
+            lineColors[colorIndex++] = 0.44 * alpha; // G
+            lineColors[colorIndex++] = 0.52 * alpha; // B
 
-            lineColors[colorIndex++] = 0.65 * alpha; // R
-            lineColors[colorIndex++] = 0.33 * alpha; // G
-            lineColors[colorIndex++] = 0.96 * alpha; // B
+            lineColors[colorIndex++] = 0.98 * alpha; // R (#f59e0b)
+            lineColors[colorIndex++] = 0.75 * alpha; // G
+            lineColors[colorIndex++] = 0.14 * alpha; // B
           }
         }
       }

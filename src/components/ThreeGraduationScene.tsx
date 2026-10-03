@@ -50,36 +50,36 @@ export const ThreeGraduationScene: React.FC<ThreeGraduationSceneProps> = ({ onTo
     container.appendChild(renderer.domElement);
 
     // 2. Lights
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.9);
+    const ambientLight = new THREE.AmbientLight(0xfff1f2, 1.1);
     scene.add(ambientLight);
 
-    // Cyber Cyan Key Light
-    const cyanLight = new THREE.PointLight(0x00f5d4, 15, 20);
-    cyanLight.position.set(-3, 3, 3);
-    scene.add(cyanLight);
+    // Warm Rose Gold Key Light
+    const roseLight = new THREE.PointLight(0xfb7185, 16, 22);
+    roseLight.position.set(-3, 3, 3);
+    scene.add(roseLight);
 
-    // Neon Magenta/Purple Fill Light
-    const magentaLight = new THREE.PointLight(0xd946ef, 12, 20);
-    magentaLight.position.set(3, -2, 2);
-    scene.add(magentaLight);
+    // Velvet Wine/Crimson Fill Light
+    const wineLight = new THREE.PointLight(0xbe123c, 14, 22);
+    wineLight.position.set(3, -2, 2);
+    scene.add(wineLight);
 
-    // Golden Rim Light
-    const goldRim = new THREE.DirectionalLight(0xffd166, 2.5);
+    // Champagne Golden Rim Light
+    const goldRim = new THREE.DirectionalLight(0xfcd34d, 3.0);
     goldRim.position.set(0, 4, -4);
     scene.add(goldRim);
 
-    // Interactive Cursor Follower Light
-    const cursorLight = new THREE.PointLight(0x38bdf8, 8, 10);
+    // Interactive Cursor Follower Light (Rose Gold Glow)
+    const cursorLight = new THREE.PointLight(0xf43f5e, 9, 12);
     cursorLight.position.set(0, 0, 3.5);
     scene.add(cursorLight);
 
     // Holographic Cyber Pedestal (Floor disc)
     const floorGeo = new THREE.RingGeometry(1.6, 2.6, 32);
     const floorMat = new THREE.MeshBasicMaterial({
-      color: 0x06b6d4,
+      color: 0xfb7185,
       wireframe: true,
       transparent: true,
-      opacity: 0.22,
+      opacity: 0.25,
       side: THREE.DoubleSide,
     });
     const floorMesh = new THREE.Mesh(floorGeo, floorMat);
@@ -92,33 +92,33 @@ export const ThreeGraduationScene: React.FC<ThreeGraduationSceneProps> = ({ onTo
     capGroupRef.current = capGroup;
     scene.add(capGroup);
 
-    // Cap Materials
+    // Cap Materials (Deep Velvet Charcoal/Burgundy)
     const capFabricMaterial = new THREE.MeshStandardMaterial({
-      color: 0x090d16,
-      roughness: 0.35,
-      metalness: 0.25,
+      color: 0x1a0710,
+      roughness: 0.4,
+      metalness: 0.3,
     });
 
     const goldMaterial = new THREE.MeshStandardMaterial({
-      color: 0xffd166,
-      roughness: 0.2,
-      metalness: 0.85,
-      emissive: 0xffaa00,
-      emissiveIntensity: 0.15,
+      color: 0xfcd34d,
+      roughness: 0.18,
+      metalness: 0.9,
+      emissive: 0xf59e0b,
+      emissiveIntensity: 0.2,
     });
 
     const diplomaPaperMat = new THREE.MeshStandardMaterial({
-      color: 0xf8fafc,
-      roughness: 0.4,
+      color: 0xfff1f2,
+      roughness: 0.35,
       metalness: 0.1,
     });
 
     const diplomaRibbonMat = new THREE.MeshStandardMaterial({
-      color: 0xf43f5e,
-      roughness: 0.3,
-      metalness: 0.6,
-      emissive: 0xe11d48,
-      emissiveIntensity: 0.25,
+      color: 0x9f1239,
+      roughness: 0.25,
+      metalness: 0.7,
+      emissive: 0xbe123c,
+      emissiveIntensity: 0.3,
     });
 
     // 3.1 Mortarboard Upper Square Plaque
@@ -129,9 +129,9 @@ export const ThreeGraduationScene: React.FC<ThreeGraduationSceneProps> = ({ onTo
     boardMesh.receiveShadow = true;
     capGroup.add(boardMesh);
 
-    // Cyber Edge trim for the board
+    // Rose Gold Edge trim for the board
     const edges = new THREE.EdgesGeometry(boardGeo);
-    const lineMat = new THREE.LineBasicMaterial({ color: 0x38bdf8, linewidth: 2 });
+    const lineMat = new THREE.LineBasicMaterial({ color: 0xfb7185, linewidth: 2 });
     const boardWireframe = new THREE.LineSegments(edges, lineMat);
     boardMesh.add(boardWireframe);
 
@@ -209,7 +209,7 @@ export const ThreeGraduationScene: React.FC<ThreeGraduationSceneProps> = ({ onTo
     ringsRef.current = ringsGroup;
 
     const ringMat1 = new THREE.MeshBasicMaterial({
-      color: 0x06b6d4,
+      color: 0xfb7185,
       wireframe: true,
       transparent: true,
       opacity: 0.45,
@@ -220,7 +220,7 @@ export const ThreeGraduationScene: React.FC<ThreeGraduationSceneProps> = ({ onTo
     ringsGroup.add(ringMesh1);
 
     const ringMat2 = new THREE.MeshBasicMaterial({
-      color: 0xa855f7,
+      color: 0xfcd34d,
       wireframe: true,
       transparent: true,
       opacity: 0.4,
@@ -233,15 +233,15 @@ export const ThreeGraduationScene: React.FC<ThreeGraduationSceneProps> = ({ onTo
 
     scene.add(ringsGroup);
 
-    // 5. Ambient Cyber Star Particles
+    // 5. Ambient Velvet Cosmic Star Particles
     const particleCount = 450;
     const particleGeo = new THREE.BufferGeometry();
     const positions = new Float32Array(particleCount * 3);
     const colors = new Float32Array(particleCount * 3);
 
-    const cyanColor = new THREE.Color(0x00f5d4);
-    const purpleColor = new THREE.Color(0xa855f7);
-    const goldColor = new THREE.Color(0xffd166);
+    const roseColor = new THREE.Color(0xfb7185);
+    const wineColor = new THREE.Color(0xbe123c);
+    const goldColor = new THREE.Color(0xfcd34d);
 
     for (let i = 0; i < particleCount; i++) {
       positions[i * 3] = (Math.random() - 0.5) * 14;
@@ -249,7 +249,7 @@ export const ThreeGraduationScene: React.FC<ThreeGraduationSceneProps> = ({ onTo
       positions[i * 3 + 2] = (Math.random() - 0.5) * 8;
 
       const pick = Math.random();
-      const col = pick < 0.4 ? cyanColor : pick < 0.8 ? purpleColor : goldColor;
+      const col = pick < 0.45 ? roseColor : pick < 0.8 ? goldColor : wineColor;
       colors[i * 3] = col.r;
       colors[i * 3 + 1] = col.g;
       colors[i * 3 + 2] = col.b;
@@ -452,28 +452,28 @@ export const ThreeGraduationScene: React.FC<ThreeGraduationSceneProps> = ({ onTo
       initialY: capGroupRef.current.position.y,
     };
 
-    // Confetti Explosion
+    // Rose Gold & Champagne Gold Confetti Explosion
     confetti({
-      particleCount: 120,
-      spread: 90,
+      particleCount: 130,
+      spread: 95,
       origin: { y: 0.6 },
-      colors: ['#00f5d4', '#a855f7', '#ffd166', '#f43f5e', '#38bdf8'],
+      colors: ['#fb7185', '#f43f5e', '#fbbf24', '#fef08a', '#fda4af', '#be123c'],
     });
 
     setTimeout(() => {
       confetti({
-        particleCount: 70,
+        particleCount: 80,
         angle: 60,
-        spread: 55,
+        spread: 60,
         origin: { x: 0 },
-        colors: ['#00f5d4', '#ffd166'],
+        colors: ['#fb7185', '#fcd34d'],
       });
       confetti({
-        particleCount: 70,
+        particleCount: 80,
         angle: 120,
-        spread: 55,
+        spread: 60,
         origin: { x: 1 },
-        colors: ['#a855f7', '#f43f5e'],
+        colors: ['#be123c', '#f43f5e'],
       });
     }, 250);
   };
@@ -494,18 +494,18 @@ export const ThreeGraduationScene: React.FC<ThreeGraduationSceneProps> = ({ onTo
         title="Kéo chuột hoặc vuốt để xoay mô hình 3D"
       />
 
-      {/* Cyber UI Badge Overlay */}
+      {/* Rose Gold UI Badge Overlay */}
       <div className="absolute top-3 left-3 sm:top-4 sm:left-4 pointer-events-none">
-        <div className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-slate-900/80 border border-cyan-500/30 backdrop-blur-md text-[10px] sm:text-xs font-mono-code text-cyan-400 shadow-lg shadow-cyan-500/10">
-          <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-cyan-400 animate-ping" />
+        <div className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-rose-950/80 border border-rose-500/30 backdrop-blur-md text-[10px] sm:text-xs font-mono-code text-rose-300 shadow-lg shadow-rose-950/50">
+          <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-rose-400 animate-ping" />
           <span>3D_HOLO_VIEWER // 360°</span>
         </div>
       </div>
 
       {/* Drag & Toss Hint Controls */}
       <div className="absolute bottom-3 sm:bottom-4 inset-x-3 sm:inset-x-4 flex items-center justify-between gap-2 pointer-events-auto">
-        <div className="text-[10px] sm:text-[11px] font-mono-code text-slate-400 bg-slate-900/80 backdrop-blur-md px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-lg border border-slate-700/50 hidden sm:flex items-center gap-1.5">
-          <span className="text-cyan-400 font-bold">🖱️</span>
+        <div className="text-[10px] sm:text-[11px] font-mono-code text-rose-200/70 bg-rose-950/70 backdrop-blur-md px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-lg border border-rose-800/40 hidden sm:flex items-center gap-1.5">
+          <span className="text-amber-400 font-bold">🖱️</span>
           <span>Kéo/vuốt xoay 360°</span>
         </div>
 
@@ -513,7 +513,7 @@ export const ThreeGraduationScene: React.FC<ThreeGraduationSceneProps> = ({ onTo
           {isInteracting && (
             <button
               onClick={resetRotation}
-              className="p-2 sm:p-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-slate-700 text-slate-300 hover:text-white transition-all text-xs"
+              className="p-2 sm:p-2.5 rounded-xl bg-rose-950/80 hover:bg-rose-900 border border-rose-800/60 text-rose-200 hover:text-white transition-all text-xs"
               title="Đặt lại góc xoay"
             >
               <RotateCcw className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
@@ -525,8 +525,8 @@ export const ThreeGraduationScene: React.FC<ThreeGraduationSceneProps> = ({ onTo
             disabled={isTossing}
             className={`flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-xl font-bold text-xs sm:text-sm tracking-wider uppercase transition-all shadow-lg ${
               isTossing
-                ? 'bg-purple-600/50 text-purple-200 cursor-not-allowed'
-                : 'bg-gradient-to-r from-cyan-500 via-purple-600 to-pink-500 hover:from-cyan-400 hover:to-pink-400 text-white shadow-cyan-500/25 hover:scale-105 active:scale-95'
+                ? 'bg-rose-900/60 text-rose-300 cursor-not-allowed'
+                : 'bg-gradient-to-r from-rose-600 via-pink-600 to-amber-500 hover:from-rose-500 hover:to-amber-400 text-white shadow-rose-900/50 hover:scale-105 active:scale-95'
             }`}
           >
             <Sparkles className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${isTossing ? 'animate-spin' : 'animate-bounce'}`} />

@@ -90,8 +90,8 @@ export const CountdownSection: React.FC = () => {
   };
 
   const timerUnits = [
-    { label: 'NGÀY', value: timeLeft.days, color: 'text-cyan-400', border: 'border-cyan-500/30' },
-    { label: 'GIỜ', value: timeLeft.hours, color: 'text-purple-400', border: 'border-purple-500/30' },
+    { label: 'NGÀY', value: timeLeft.days, color: 'text-rose-400', border: 'border-rose-500/30' },
+    { label: 'GIỜ', value: timeLeft.hours, color: 'text-amber-300', border: 'border-amber-500/30' },
     { label: 'PHÚT', value: timeLeft.minutes, color: 'text-pink-400', border: 'border-pink-500/30' },
     { label: 'GIÂY', value: timeLeft.seconds, color: 'text-emerald-400', border: 'border-emerald-500/30' },
   ];
@@ -99,20 +99,20 @@ export const CountdownSection: React.FC = () => {
   return (
     <section id="countdown" className="py-12 relative">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="cyber-card rounded-3xl p-6 sm:p-10 border-cyan-500/20 text-center relative overflow-hidden">
+        <div className="cyber-card rounded-3xl p-6 sm:p-10 border-rose-500/20 text-center relative overflow-hidden">
           {/* Subtle radar scanline background effect */}
-          <div className="absolute inset-0 bg-gradient-to-b from-cyan-500/5 via-transparent to-purple-500/5 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-b from-rose-500/5 via-transparent to-amber-500/5 pointer-events-none" />
 
           {/* Title */}
           <div className="relative z-10 space-y-2 mb-8">
-            <div className="inline-flex items-center gap-2 text-xs font-mono-code text-cyan-400 px-3 py-1 rounded-full bg-cyan-950/40 border border-cyan-500/30">
-              <Clock className="w-3.5 h-3.5" />
+            <div className="inline-flex items-center gap-2 text-xs font-mono-code text-rose-300 px-3 py-1 rounded-full bg-rose-950/60 border border-rose-500/30">
+              <Clock className="w-3.5 h-3.5 text-amber-400" />
               <span>TIME_COUNTDOWN // CHẠM TAY VÀO KHOẢNH KHẮC</span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-tech font-bold text-white tracking-wide">
               ĐẾM NGƯỢC ĐẾN GIỜ G
             </h2>
-            <p className="text-xs sm:text-sm text-slate-400">
+            <p className="text-xs sm:text-sm text-rose-200/80">
               {GRADUATION_CONFIG.event.date} — {GRADUATION_CONFIG.event.time}
             </p>
           </div>
@@ -122,12 +122,12 @@ export const CountdownSection: React.FC = () => {
             {timerUnits.map((unit, idx) => (
               <div
                 key={idx}
-                className={`relative bg-slate-900/80 backdrop-blur-md rounded-2xl p-4 sm:p-6 border ${unit.border} shadow-lg`}
+                className={`relative bg-rose-950/50 backdrop-blur-md rounded-2xl p-4 sm:p-6 border ${unit.border} shadow-lg shadow-rose-950/40`}
               >
                 <div className={`text-3xl sm:text-5xl font-tech font-extrabold ${unit.color} tracking-wider`}>
                   {String(unit.value).padStart(2, '0')}
                 </div>
-                <div className="text-[10px] sm:text-xs font-mono-code text-slate-400 mt-1 uppercase tracking-widest">
+                <div className="text-[10px] sm:text-xs font-mono-code text-rose-300/70 mt-1 uppercase tracking-widest">
                   {unit.label}
                 </div>
               </div>
@@ -141,17 +141,17 @@ export const CountdownSection: React.FC = () => {
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => sound.playClick()}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-cyan-950/70 hover:bg-cyan-900/70 border border-cyan-500/40 text-cyan-200 text-xs sm:text-sm font-semibold transition-all hover:scale-105 shadow-md shadow-cyan-500/20"
+              className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-rose-950/70 hover:bg-rose-900/70 border border-rose-500/40 text-rose-200 text-xs sm:text-sm font-semibold transition-all hover:scale-105 shadow-md shadow-rose-950/40"
             >
-              <CalendarPlus className="w-4 h-4 text-cyan-400" />
+              <CalendarPlus className="w-4 h-4 text-rose-400" />
               <span>Thêm vào Google Calendar</span>
             </a>
 
             <button
               onClick={downloadIcs}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-purple-950/70 hover:bg-purple-900/70 border border-purple-500/40 text-purple-200 text-xs sm:text-sm font-semibold transition-all hover:scale-105 shadow-md shadow-purple-500/20"
+              className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-amber-950/70 hover:bg-amber-900/70 border border-amber-500/40 text-amber-200 text-xs sm:text-sm font-semibold transition-all hover:scale-105 shadow-md shadow-amber-950/40"
             >
-              <Download className="w-4 h-4 text-purple-400" />
+              <Download className="w-4 h-4 text-amber-400" />
               <span>Tải file Lịch (.ics) cho iPhone/PC</span>
             </button>
           </div>
