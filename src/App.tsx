@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { YearbookIntro } from './components/YearbookIntro';
+import { CelestialOrbIntro } from './components/CelestialOrbIntro';
 import { AccessHologramModal } from './components/AccessHologramModal';
 import { CyberNavbar } from './components/CyberNavbar';
 import { HeroSection } from './components/HeroSection';
@@ -13,7 +13,7 @@ import { ThreeCyberBackground } from './components/ThreeCyberBackground';
 import { GoldenStardustCursor } from './components/GoldenStardustCursor';
 
 export const App: React.FC = () => {
-  // 3D Intro state (Feature #5: 3D Interactive Graduation Grimoire / Yearbook)
+  // 3D Intro state (Feature #6: 3D Celestial Glass Orb Intro)
   const [showIntro, setShowIntro] = useState(true);
   const [showAccessModal, setShowAccessModal] = useState(false);
   const [spotlightPos, setSpotlightPos] = useState({ x: -500, y: -500 });
@@ -32,8 +32,8 @@ export const App: React.FC = () => {
       onPointerMove={handlePointerMove}
       className="min-h-screen bg-[#FAF8F5] text-slate-800 relative overflow-x-hidden selection:bg-amber-100 selection:text-amber-900"
     >
-      {/* 3D Intro #5: 3D Interactive Graduation Grimoire / Yearbook */}
-      {showIntro && <YearbookIntro onEnter={handleIntroComplete} />}
+      {/* 3D Intro #6: 3D Celestial Glass Orb Intro */}
+      {showIntro && <CelestialOrbIntro onEnter={handleIntroComplete} />}
 
       {/* Interactive 3D Gold Leaf Flakes Background Canvas */}
       <ThreeCyberBackground />

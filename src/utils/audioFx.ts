@@ -646,6 +646,74 @@ class SoundFX {
       // Audio fallback
     }
   }
+
+  // Crystal glass singing bowl resonance
+  public playCrystalResonance() {
+    if (this.isMuted) return;
+    try {
+      this.initContext();
+      if (!this.ctx) return;
+
+      const glassNotes = [880, 1320, 1760]; // Pure octave and fifth
+      glassNotes.forEach((freq, idx) => {
+        if (!this.ctx) return;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+        gain.gain.setValueAtTime(0, this.ctx.currentTime);
+        gain.gain.linearRampToValueAtTime(0.08 / (idx + 1), this.ctx.currentTime + 0.1);
+        gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 1.2);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(this.ctx.currentTime + 1.25);
+      });
+    } catch {
+      // Audio fallback
+    }
+  }
+
+  // Crystal sphere shatter sparkle
+  public playCrystalShatter() {
+    if (this.isMuted) return;
+    try {
+      this.initContext();
+      if (!this.ctx) return;
+
+      // Deep sub release
+      const sub = this.ctx.createOscillator();
+      const subGain = this.ctx.createGain();
+      sub.type = 'sine';
+      sub.frequency.setValueAtTime(160, this.ctx.currentTime);
+      sub.frequency.exponentialRampToValueAtTime(45, this.ctx.currentTime + 0.6);
+      subGain.gain.setValueAtTime(0.2, this.ctx.currentTime);
+      subGain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.6);
+      sub.connect(subGain);
+      subGain.connect(this.ctx.destination);
+      sub.start();
+      sub.stop(this.ctx.currentTime + 0.6);
+
+      // Crystalline glass shards (random high chimes)
+      const shards = [1760, 2093, 2349, 2793, 3135, 3520];
+      shards.forEach((freq, i) => {
+        if (!this.ctx) return;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(freq, this.ctx.currentTime + i * 0.04);
+        const st = this.ctx.currentTime + i * 0.04;
+        gain.gain.setValueAtTime(0.12, st);
+        gain.gain.exponentialRampToValueAtTime(0.001, st + 0.7);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(st);
+        osc.stop(st + 0.75);
+      });
+    } catch {
+      // Audio fallback
+    }
+  }
 }
 
 export const sound = new SoundFX();
