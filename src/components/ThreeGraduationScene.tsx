@@ -68,6 +68,25 @@ export const ThreeGraduationScene: React.FC<ThreeGraduationSceneProps> = ({ onTo
     goldRim.position.set(0, 4, -4);
     scene.add(goldRim);
 
+    // Interactive Cursor Follower Light
+    const cursorLight = new THREE.PointLight(0x38bdf8, 8, 10);
+    cursorLight.position.set(0, 0, 3.5);
+    scene.add(cursorLight);
+
+    // Holographic Cyber Pedestal (Floor disc)
+    const floorGeo = new THREE.RingGeometry(1.6, 2.6, 32);
+    const floorMat = new THREE.MeshBasicMaterial({
+      color: 0x06b6d4,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.22,
+      side: THREE.DoubleSide,
+    });
+    const floorMesh = new THREE.Mesh(floorGeo, floorMat);
+    floorMesh.rotation.x = Math.PI / 2;
+    floorMesh.position.y = -1.25;
+    scene.add(floorMesh);
+
     // 3. Main Cap Group
     const capGroup = new THREE.Group();
     capGroupRef.current = capGroup;
@@ -175,7 +194,17 @@ export const ThreeGraduationScene: React.FC<ThreeGraduationSceneProps> = ({ onTo
 
     capGroup.add(diplomaGroup);
 
-    // 4. Holographic Cyber Rings
+    // 3.6 Orbiting Golden 3D Stars
+    const starsGroup = new THREE.Group();
+    const starGeo = new THREE.OctahedronGeometry(0.12, 0);
+    for (let i = 0; i < 6; i++) {
+      const starMesh = new THREE.Mesh(starGeo, goldMaterial);
+      const angle = (i / 6) * Math.PI * 2;
+      const radius = 2.0;
+      starMesh.position.set(Math.cos(angle) * radius, ((i % 3) - 1) * 0.45, Math.sin(angle) * radius);
+      starsGroup.add(starMesh);
+    }
+    capGroup.add(starsGroup);
     const ringsGroup = new THREE.Group();
     ringsRef.current = ringsGroup;
 
@@ -351,6 +380,20 @@ export const ThreeGraduationScene: React.FC<ThreeGraduationSceneProps> = ({ onTo
         capGroupRef.current.rotation.x = 0.2 + mouseRef.current.y * 0.3;
         capGroupRef.current.rotation.z = -mouseRef.current.x * 0.2;
       }
+
+      // Move cursor light to illuminate 3D model dynamically
+      cursorLight.position.x = mouseRef.current.x * 4.5;
+      cursorLight.position.y = mouseRef.current.y * 3.5 + 0.5;
+
+      // Rotate 3D Stars Group
+      starsGroup.rotation.y = elapsedTime * 0.4;
+      starsGroup.children.forEach((star) => {
+        star.rotation.x += 0.02;
+        star.rotation.y += 0.03;
+      });
+
+      // Rotate Floor Disc
+      floorMesh.rotation.z = -elapsedTime * 0.15;
 
       // Rotate Hologram Rings
       if (ringsRef.current) {

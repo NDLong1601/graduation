@@ -10,12 +10,16 @@ import { MemoryMatrix } from './components/MemoryMatrix';
 import { RsvpSection } from './components/RsvpSection';
 import { GuestbookSection } from './components/GuestbookSection';
 import { CyberFooter } from './components/CyberFooter';
+import { ThreeCyberBackground } from './components/ThreeCyberBackground';
 
 export const App: React.FC = () => {
   const [showAccessModal, setShowAccessModal] = useState(true);
 
   return (
     <div className="min-h-screen bg-[#030712] text-slate-100 cyber-grid relative overflow-x-hidden selection:bg-cyan-500 selection:text-black">
+      {/* Interactive 3D Cyber Background Canvas */}
+      <ThreeCyberBackground />
+
       {/* 3D Glowing Ambient Orbs */}
       <div className="fixed top-20 left-10 w-96 h-96 bg-cyan-500/10 rounded-full blur-[120px] pointer-events-none" />
       <div className="fixed bottom-20 right-10 w-[500px] h-[500px] bg-purple-600/10 rounded-full blur-[140px] pointer-events-none" />
