@@ -539,6 +539,75 @@ class SoundFX {
       // Audio fallback
     }
   }
+
+  // Cyber compile glitch beeps
+  public playCyberGlitch() {
+    if (this.isMuted) return;
+    try {
+      this.initContext();
+      if (!this.ctx) return;
+
+      const freqs = [587.33, 880.00, 1174.66, 1760.00];
+      freqs.forEach((freq, idx) => {
+        if (!this.ctx) return;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(freq, this.ctx.currentTime + idx * 0.05);
+        const startTime = this.ctx.currentTime + idx * 0.05;
+        gain.gain.setValueAtTime(0.08, startTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.05);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(startTime);
+        osc.stop(startTime + 0.06);
+      });
+    } catch {
+      // Audio fallback
+    }
+  }
+
+  // Gold Alchemy Wave transformation resonance
+  public playGoldAlchemyWave() {
+    if (this.isMuted) return;
+    try {
+      this.initContext();
+      if (!this.ctx) return;
+
+      // Deep sub transformation whoosh
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(120, this.ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(440, this.ctx.currentTime + 0.8);
+      gain.gain.setValueAtTime(0.2, this.ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 1.2);
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+      osc.start();
+      osc.stop(this.ctx.currentTime + 1.2);
+
+      // Radiant Gold bells arpeggio
+      const goldChord = [440, 554.37, 659.25, 880, 1108.73, 1318.51, 1760];
+      goldChord.forEach((freq, idx) => {
+        if (!this.ctx) return;
+        const bell = this.ctx.createOscillator();
+        const bellGain = this.ctx.createGain();
+        bell.type = 'triangle';
+        bell.frequency.setValueAtTime(freq, this.ctx.currentTime + 0.2 + idx * 0.08);
+        const st = this.ctx.currentTime + 0.2 + idx * 0.08;
+        bellGain.gain.setValueAtTime(0, st);
+        bellGain.gain.linearRampToValueAtTime(0.18, st + 0.03);
+        bellGain.gain.exponentialRampToValueAtTime(0.001, st + 1.4);
+        bell.connect(bellGain);
+        bellGain.connect(this.ctx.destination);
+        bell.start(st);
+        bell.stop(st + 1.45);
+      });
+    } catch {
+      // Audio fallback
+    }
+  }
 }
 
 export const sound = new SoundFX();
