@@ -407,6 +407,71 @@ class SoundFX {
       // Audio fallback
     }
   }
+
+  // Grand Royal Gates opening sound
+  public playGateOpen() {
+    if (this.isMuted) return;
+    try {
+      this.initContext();
+      if (!this.ctx) return;
+
+      // 1. Heavy iron bolt unlock clink
+      const boltOsc = this.ctx.createOscillator();
+      const boltGain = this.ctx.createGain();
+      boltOsc.type = 'square';
+      boltOsc.frequency.setValueAtTime(440, this.ctx.currentTime);
+      boltOsc.frequency.exponentialRampToValueAtTime(180, this.ctx.currentTime + 0.12);
+      boltGain.gain.setValueAtTime(0.2, this.ctx.currentTime);
+      boltGain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.12);
+      boltOsc.connect(boltGain);
+      boltGain.connect(this.ctx.destination);
+      boltOsc.start();
+      boltOsc.stop(this.ctx.currentTime + 0.12);
+
+      // 2. Heavy door resonance whoosh (filtered low-frequency sweep)
+      const bufferSize = this.ctx.sampleRate * 1.5;
+      const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        data[i] = (Math.random() * 2 - 1) * 0.35;
+      }
+      const noise = this.ctx.createBufferSource();
+      noise.buffer = buffer;
+      const filter = this.ctx.createBiquadFilter();
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(150, this.ctx.currentTime + 0.1);
+      filter.frequency.exponentialRampToValueAtTime(800, this.ctx.currentTime + 1.2);
+      const noiseGain = this.ctx.createGain();
+      noiseGain.gain.setValueAtTime(0, this.ctx.currentTime);
+      noiseGain.gain.linearRampToValueAtTime(0.18, this.ctx.currentTime + 0.2);
+      noiseGain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 1.5);
+      noise.connect(filter);
+      filter.connect(noiseGain);
+      noiseGain.connect(this.ctx.destination);
+      noise.start(this.ctx.currentTime + 0.08);
+      noise.stop(this.ctx.currentTime + 1.5);
+
+      // 3. Welcoming Royal Chimes
+      const chimeNotes = [392.00, 523.25, 659.25, 783.99, 1046.50]; // G - C - E - G - C
+      chimeNotes.forEach((freq, idx) => {
+        if (!this.ctx) return;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, this.ctx.currentTime + 0.25 + idx * 0.12);
+        const startTime = this.ctx.currentTime + 0.25 + idx * 0.12;
+        gain.gain.setValueAtTime(0, startTime);
+        gain.gain.linearRampToValueAtTime(0.15, startTime + 0.04);
+        gain.gain.exponentialRampToValueAtTime(0.001, startTime + 1.1);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(startTime);
+        osc.stop(startTime + 1.15);
+      });
+    } catch {
+      // Audio fallback
+    }
+  }
 }
 
 export const sound = new SoundFX();

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { GoldenWarpIntro } from './components/GoldenWarpIntro';
+import { RoyalGatesIntro } from './components/RoyalGatesIntro';
 import { AccessHologramModal } from './components/AccessHologramModal';
 import { CyberNavbar } from './components/CyberNavbar';
 import { HeroSection } from './components/HeroSection';
@@ -32,8 +32,8 @@ export const App: React.FC = () => {
       onPointerMove={handlePointerMove}
       className="min-h-screen bg-[#FAF8F5] text-slate-800 relative overflow-x-hidden selection:bg-amber-100 selection:text-amber-900"
     >
-      {/* 3D Intro #1: Golden Warp Speed Hyperspace Tunnel */}
-      {showIntro && <GoldenWarpIntro onEnter={handleIntroComplete} />}
+      {/* 3D Intro #2: Grand Royal Gates Unveiling */}
+      {showIntro && <RoyalGatesIntro onEnter={handleIntroComplete} />}
 
       {/* Interactive 3D Gold Leaf Flakes Background Canvas */}
       <ThreeCyberBackground />
