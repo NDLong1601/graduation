@@ -472,6 +472,73 @@ class SoundFX {
       // Audio fallback
     }
   }
+
+  // Particle Morphing crystalline arpeggio
+  public playParticleMorph() {
+    if (this.isMuted) return;
+    try {
+      this.initContext();
+      if (!this.ctx) return;
+
+      const pentatonic = [523.25, 587.33, 659.25, 783.99, 880.00, 1046.50, 1174.66, 1318.51];
+      pentatonic.forEach((freq, idx) => {
+        if (!this.ctx) return;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, this.ctx.currentTime + idx * 0.09);
+        const startTime = this.ctx.currentTime + idx * 0.09;
+        gain.gain.setValueAtTime(0, startTime);
+        gain.gain.linearRampToValueAtTime(0.12, startTime + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.8);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(startTime);
+        osc.stop(startTime + 0.85);
+      });
+    } catch {
+      // Audio fallback
+    }
+  }
+
+  // Particle burst & scatter whoosh
+  public playParticleExplosion() {
+    if (this.isMuted) return;
+    try {
+      this.initContext();
+      if (!this.ctx) return;
+
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(320, this.ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(80, this.ctx.currentTime + 0.5);
+      gain.gain.setValueAtTime(0.2, this.ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.5);
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+      osc.start();
+      osc.stop(this.ctx.currentTime + 0.5);
+
+      // High shimmering sparkles
+      [1567.98, 2093.00, 2637.02].forEach((f, i) => {
+        if (!this.ctx) return;
+        const o = this.ctx.createOscillator();
+        const g = this.ctx.createGain();
+        o.type = 'sine';
+        o.frequency.setValueAtTime(f, this.ctx.currentTime + i * 0.06);
+        const st = this.ctx.currentTime + i * 0.06;
+        g.gain.setValueAtTime(0.1, st);
+        g.gain.exponentialRampToValueAtTime(0.001, st + 0.6);
+        o.connect(g);
+        g.connect(this.ctx.destination);
+        o.start(st);
+        o.stop(st + 0.65);
+      });
+    } catch {
+      // Audio fallback
+    }
+  }
 }
 
 export const sound = new SoundFX();
