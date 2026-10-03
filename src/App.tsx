@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { RoyalStageIntro } from './components/RoyalStageIntro';
+import { CyberToGoldIntro } from './components/CyberToGoldIntro';
 import { AccessHologramModal } from './components/AccessHologramModal';
 import { CyberNavbar } from './components/CyberNavbar';
 import { HeroSection } from './components/HeroSection';
@@ -13,7 +13,7 @@ import { ThreeCyberBackground } from './components/ThreeCyberBackground';
 import { GoldenStardustCursor } from './components/GoldenStardustCursor';
 
 export const App: React.FC = () => {
-  // 3D Intro state (Feature #8: 3D Grand Stage Reveal & Royal Velvet Curtains)
+  // 3D Intro state (Feature #4: Cyber Matrix Terminal into 24K Gold Alchemy Shockwave)
   const [showIntro, setShowIntro] = useState(true);
   const [showAccessModal, setShowAccessModal] = useState(false);
   const [spotlightPos, setSpotlightPos] = useState({ x: -500, y: -500 });
@@ -32,8 +32,8 @@ export const App: React.FC = () => {
       onPointerMove={handlePointerMove}
       className="min-h-screen bg-[#FAF8F5] text-slate-800 relative overflow-x-hidden selection:bg-amber-100 selection:text-amber-900"
     >
-      {/* 3D Intro #8: 3D Grand Stage Reveal & Royal Velvet Curtains */}
-      {showIntro && <RoyalStageIntro onEnter={handleIntroComplete} />}
+      {/* 3D Intro #4: Cyber Matrix Terminal into 24K Gold Alchemy Shockwave */}
+      {showIntro && <CyberToGoldIntro onEnter={handleIntroComplete} />}
 
       {/* Interactive 3D Gold Leaf Flakes Background Canvas */}
       <ThreeCyberBackground />
