@@ -19,7 +19,10 @@ export const GuestbookSection: React.FC = () => {
     try {
       const saved = localStorage.getItem('graduation_guestbook_wishes');
       if (saved) {
-        setWishes(JSON.parse(saved));
+        const parsed = JSON.parse(saved);
+        const realWishes = parsed.filter((w: WishMessage) => !['wish-1', 'wish-2', 'wish-3'].includes(w.id));
+        setWishes(realWishes);
+        localStorage.setItem('graduation_guestbook_wishes', JSON.stringify(realWishes));
       }
     } catch (e) {
       console.error(e);
@@ -176,35 +179,49 @@ export const GuestbookSection: React.FC = () => {
             </div>
 
             <div className="space-y-4 max-h-[600px] overflow-y-auto pr-1">
-              {wishes.map((item) => (
-                <div
-                  key={item.id}
-                  className="cyber-card p-5 rounded-2xl border-slate-800 hover:border-cyan-500/30 transition-all group"
-                >
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-xl bg-slate-900 border border-slate-700 flex items-center justify-center text-xl shadow-inner">
-                        {item.avatarEmoji}
-                      </div>
-                      <div>
-                        <h4 className="text-sm font-bold text-white group-hover:text-cyan-300 transition-colors">
-                          {item.name}
-                        </h4>
-                        <span className="text-[11px] font-mono-code text-purple-400">
-                          {item.relation}
-                        </span>
-                      </div>
-                    </div>
-                    <span className="text-[10px] font-mono-code text-slate-500">
-                      {item.timestamp}
-                    </span>
+              {wishes.length === 0 ? (
+                <div className="cyber-card p-10 rounded-2xl border-slate-800/80 text-center space-y-3">
+                  <div className="w-14 h-14 rounded-2xl bg-slate-900 border border-slate-700/60 flex items-center justify-center text-2xl mx-auto shadow-inner">
+                    💌
                   </div>
-
-                  <p className="text-xs sm:text-sm text-slate-300 pl-13 leading-relaxed">
-                    "{item.message}"
-                  </p>
+                  <div>
+                    <h4 className="text-sm font-bold text-white">Chưa có lời chúc nào</h4>
+                    <p className="text-xs text-slate-400 mt-1">
+                      Hãy là người đầu tiên gửi những lời chúc tốt đẹp nhất đến tân khoa nhé!
+                    </p>
+                  </div>
                 </div>
-              ))}
+              ) : (
+                wishes.map((item) => (
+                  <div
+                    key={item.id}
+                    className="cyber-card p-5 rounded-2xl border-slate-800 hover:border-cyan-500/30 transition-all group"
+                  >
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-xl bg-slate-900 border border-slate-700 flex items-center justify-center text-xl shadow-inner">
+                          {item.avatarEmoji}
+                        </div>
+                        <div>
+                          <h4 className="text-sm font-bold text-white group-hover:text-cyan-300 transition-colors">
+                            {item.name}
+                          </h4>
+                          <span className="text-[11px] font-mono-code text-purple-400">
+                            {item.relation}
+                          </span>
+                        </div>
+                      </div>
+                      <span className="text-[10px] font-mono-code text-slate-500">
+                        {item.timestamp}
+                      </span>
+                    </div>
+
+                    <p className="text-xs sm:text-sm text-slate-300 pl-13 leading-relaxed">
+                      "{item.message}"
+                    </p>
+                  </div>
+                ))
+              )}
             </div>
           </div>
         </div>

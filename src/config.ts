@@ -114,29 +114,4 @@ export const GRADUATION_CONFIG: EventConfig = {
   },
 };
 
-export const INITIAL_WISHES: WishMessage[] = [
-  {
-    id: "wish-1",
-    name: "Mẹ & Bố",
-    relation: "Gia đình",
-    message: "Chúc mừng con trai yêu quý đã hoàn thành xuất sắc chặng đường đại học! Cả nhà luôn tự hào về con và chúc con vững bước trên chặng đường phía trước.",
-    timestamp: "Vừa xong",
-    avatarEmoji: "❤️",
-  },
-  {
-    id: "wish-2",
-    name: "Team Đồ Án K20",
-    relation: "Bạn cùng lớp",
-    message: "Chúc mừng bro đã chính thức giải phóng khỏi Deadline và nhận bằng Kỹ Sư! Hẹn gặp ở lễ trao bằng để cùng ném mũ nhé!",
-    timestamp: "Hôm nay",
-    avatarEmoji: "🚀",
-  },
-  {
-    id: "wish-3",
-    name: "Thầy Hướng Dẫn",
-    relation: "Giảng viên",
-    message: "Chúc mừng em đã bảo vệ thành công đề tài. Chúc em tiếp tục giữ vững đam mê học hỏi và gặt hái nhiều thành công trong sự nghiệp kỹ thuật.",
-    timestamp: "Hôm qua",
-    avatarEmoji: "⭐",
-  },
-];
+export const INITIAL_WISHES: WishMessage[] = [];

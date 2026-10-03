@@ -5,8 +5,6 @@ import { HeroSection } from './components/HeroSection';
 import { CountdownSection } from './components/CountdownSection';
 import { EventTimeline } from './components/EventTimeline';
 import { VenueSection } from './components/VenueSection';
-import { DresscodeSection } from './components/DresscodeSection';
-import { MemoryMatrix } from './components/MemoryMatrix';
 import { RsvpSection } from './components/RsvpSection';
 import { GuestbookSection } from './components/GuestbookSection';
 import { CyberFooter } from './components/CyberFooter';
@@ -39,8 +37,6 @@ export const App: React.FC = () => {
         <CountdownSection />
         <EventTimeline />
         <VenueSection />
-        <DresscodeSection />
-        <MemoryMatrix />
         <RsvpSection />
         <GuestbookSection />
       </main>

@@ -21,8 +21,7 @@ export const CyberNavbar: React.FC<CyberNavbarProps> = ({ onOpenInvite }) => {
     { label: 'Đếm Ngược', href: '#countdown' },
     { label: 'Lịch Trình', href: '#timeline' },
     { label: 'Địa Điểm', href: '#venue' },
-    { label: 'Dresscode', href: '#dresscode' },
-    { label: 'Kỷ Niệm', href: '#memories' },
+    { label: 'Xác Nhận (RSVP)', href: '#rsvp' },
     { label: 'Lời Chúc', href: '#guestbook' },
   ];
 
