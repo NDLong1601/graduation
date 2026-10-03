@@ -5,9 +5,10 @@ import { Volume2, VolumeX, Menu, X, Sparkles, Send } from 'lucide-react';
 
 interface CyberNavbarProps {
   onOpenInvite: () => void;
+  onReplayIntro?: () => void;
 }
 
-export const CyberNavbar: React.FC<CyberNavbarProps> = ({ onOpenInvite }) => {
+export const CyberNavbar: React.FC<CyberNavbarProps> = ({ onOpenInvite, onReplayIntro }) => {
   const [isMuted, setIsMuted] = useState(sound.getMuted());
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -84,6 +85,20 @@ export const CyberNavbar: React.FC<CyberNavbarProps> = ({ onOpenInvite }) => {
             </span>
           </button>
 
+          {/* Replay 3D Intro */}
+          {onReplayIntro && (
+            <button
+              onClick={() => {
+                sound.playClick();
+                onReplayIntro();
+              }}
+              className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-amber-50 border border-slate-200 text-slate-700 hover:text-[#8A6D3B] text-xs font-medium transition-all shadow-sm"
+              title="Xem lại 3D Intro Cổng Không Gian"
+            >
+              <span>🎬 Intro 3D</span>
+            </button>
+          )}
+
           {/* Re-open Invitation Card */}
           <button
             onClick={() => {
@@ -129,6 +144,17 @@ export const CyberNavbar: React.FC<CyberNavbarProps> = ({ onOpenInvite }) => {
               {link.label}
             </a>
           ))}
+          {onReplayIntro && (
+            <button
+              onClick={() => {
+                onReplayIntro();
+                setMobileMenuOpen(false);
+              }}
+              className="w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-slate-700 hover:bg-[#F3EFEA] flex items-center gap-2"
+            >
+              <span>🎬 Xem Lại 3D Intro</span>
+            </button>
+          )}
           <button
             onClick={() => {
               onOpenInvite();

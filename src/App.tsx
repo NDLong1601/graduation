@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { GoldenWarpIntro } from './components/GoldenWarpIntro';
 import { AccessHologramModal } from './components/AccessHologramModal';
 import { CyberNavbar } from './components/CyberNavbar';
 import { HeroSection } from './components/HeroSection';
@@ -12,11 +13,18 @@ import { ThreeCyberBackground } from './components/ThreeCyberBackground';
 import { GoldenStardustCursor } from './components/GoldenStardustCursor';
 
 export const App: React.FC = () => {
-  const [showAccessModal, setShowAccessModal] = useState(true);
+  // 3D Intro state (Feature #1: Golden Warp Speed Tunnel)
+  const [showIntro, setShowIntro] = useState(true);
+  const [showAccessModal, setShowAccessModal] = useState(false);
   const [spotlightPos, setSpotlightPos] = useState({ x: -500, y: -500 });
 
   const handlePointerMove = (e: React.PointerEvent) => {
     setSpotlightPos({ x: e.clientX, y: e.clientY });
+  };
+
+  const handleIntroComplete = () => {
+    setShowIntro(false);
+    setShowAccessModal(true);
   };
 
   return (
@@ -24,6 +32,9 @@ export const App: React.FC = () => {
       onPointerMove={handlePointerMove}
       className="min-h-screen bg-[#FAF8F5] text-slate-800 relative overflow-x-hidden selection:bg-amber-100 selection:text-amber-900"
     >
+      {/* 3D Intro #1: Golden Warp Speed Hyperspace Tunnel */}
+      {showIntro && <GoldenWarpIntro onEnter={handleIntroComplete} />}
+
       {/* Interactive 3D Gold Leaf Flakes Background Canvas */}
       <ThreeCyberBackground />
 
@@ -48,7 +59,10 @@ export const App: React.FC = () => {
       />
 
       {/* Main Layout */}
-      <CyberNavbar onOpenInvite={() => setShowAccessModal(true)} />
+      <CyberNavbar
+        onOpenInvite={() => setShowAccessModal(true)}
+        onReplayIntro={() => setShowIntro(true)}
+      />
 
       <main className="relative z-10 space-y-12 sm:space-y-20">
         <HeroSection />

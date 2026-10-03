@@ -318,6 +318,95 @@ class SoundFX {
       // Audio fallback
     }
   }
+  // 3D Golden Warp Speed cosmic riser
+  public playWarpSpeed() {
+    if (this.isMuted) return;
+    try {
+      this.initContext();
+      if (!this.ctx) return;
+
+      // Filtered pink noise acceleration
+      const bufferSize = this.ctx.sampleRate * 2.0;
+      const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        data[i] = (Math.random() * 2 - 1) * 0.4;
+      }
+
+      const noise = this.ctx.createBufferSource();
+      noise.buffer = buffer;
+
+      const filter = this.ctx.createBiquadFilter();
+      filter.type = 'bandpass';
+      filter.Q.value = 4.0;
+      filter.frequency.setValueAtTime(200, this.ctx.currentTime);
+      filter.frequency.exponentialRampToValueAtTime(3200, this.ctx.currentTime + 1.8);
+
+      const gain = this.ctx.createGain();
+      gain.gain.setValueAtTime(0.01, this.ctx.currentTime);
+      gain.gain.linearRampToValueAtTime(0.16, this.ctx.currentTime + 1.2);
+      gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 2.0);
+
+      noise.connect(filter);
+      filter.connect(gain);
+      gain.connect(this.ctx.destination);
+
+      noise.start();
+      noise.stop(this.ctx.currentTime + 2.0);
+
+      // Shimmering harmonic tones rising
+      [220, 329.63, 440, 554.37, 659.25, 880].forEach((freq, idx) => {
+        if (!this.ctx) return;
+        const osc = this.ctx.createOscillator();
+        const oscGain = this.ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq * 0.8, this.ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(freq * 1.5, this.ctx.currentTime + 1.6);
+
+        const startTime = this.ctx.currentTime + idx * 0.12;
+        oscGain.gain.setValueAtTime(0.001, startTime);
+        oscGain.gain.linearRampToValueAtTime(0.04, startTime + 0.3);
+        oscGain.gain.exponentialRampToValueAtTime(0.0001, startTime + 1.5);
+
+        osc.connect(oscGain);
+        oscGain.connect(this.ctx.destination);
+        osc.start(startTime);
+        osc.stop(startTime + 1.5);
+      });
+    } catch {
+      // Audio fallback
+    }
+  }
+
+  // Supernova flash & transition chord
+  public playSupernova() {
+    if (this.isMuted) return;
+    try {
+      this.initContext();
+      if (!this.ctx) return;
+
+      const chord = [523.25, 659.25, 783.99, 1046.50, 1318.51, 1567.98, 2093.00];
+      chord.forEach((freq, idx) => {
+        if (!this.ctx) return;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+
+        const startTime = this.ctx.currentTime + idx * 0.04;
+        gain.gain.setValueAtTime(0, startTime);
+        gain.gain.linearRampToValueAtTime(0.18, startTime + 0.05);
+        gain.gain.exponentialRampToValueAtTime(0.001, startTime + 1.8);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(startTime);
+        osc.stop(startTime + 1.85);
+      });
+    } catch {
+      // Audio fallback
+    }
+  }
 }
 
 export const sound = new SoundFX();
